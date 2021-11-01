@@ -4,9 +4,8 @@
         "commonjs": true,
         "es2021": true
     },
-    "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 13
+        "ecmaVersion": 2021
     },
     "rules": {
         "indent": [
