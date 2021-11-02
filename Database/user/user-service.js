@@ -1,6 +1,6 @@
 const users = require('./user-model');
 const ReadPreference = require('mongodb').ReadPreference;
-require('./mongo').connect();
+require('../mongo').connect();
 function getByEmail(email){
 	return users.findOne({email});
 }
