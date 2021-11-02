@@ -1,4 +1,4 @@
-const User = require('../../Database/user-service');
+const User = require('../../Database/user/user-service');
 
 const isAuthenticated = async (providedEmail,providedPassword)=>
 {

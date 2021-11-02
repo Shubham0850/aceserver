@@ -2,7 +2,7 @@ const express = require('express');
 const jwt =  require('jsonwebtoken');
 const app = express();
 app.use(express.json());
-const Users = require('./Database/user-service');
+const Users = require('./Database/user/user-service');
 const isAuthinticated = require('./Helpers/authentication/authenticate');
 const authenticateToken = require('./Middlewares/authenticateToken');
 
