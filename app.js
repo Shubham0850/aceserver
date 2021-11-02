@@ -12,16 +12,16 @@ app.post('/login',async (req,res)=>{
 	const providedPwd = req.body.password;
 	const user = await isAuthinticated(providedEmail,providedPwd);
 	if(!user) res.sendStatus(401);
-  const accessToken = jwt.sign(user,process.env.JWT_SECRET)
-  res.json({...user,accessToken});
+	const accessToken = jwt.sign(user,process.env.JWT_SECRET);
+	res.json({...user,accessToken});
 });
 
 app.get('/test',authenticateToken,(req,res)=>{
-  console.log(req.user)
-})
+	console.log(req.user);
+});
 
 
 app.all('*', (req, res, next) => {
-res.sendStatus(404)
+	res.sendStatus(404);
 });
 module.exports = app;
