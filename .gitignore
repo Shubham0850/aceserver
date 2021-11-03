@@ -2,3 +2,5 @@
 *.env
 *.rest
 test.js
+.DS_Store
+.vscode
