@@ -1,6 +1,8 @@
 const express = require('express');
+const cors = require(('cors'));
 const app = express();
 app.use(express.json());
+app.use(cors());
 const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
 const Admin = require('./routeFunctions/Admin');
