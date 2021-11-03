@@ -1,5 +1,4 @@
 const products = require('./product-model');
-const ReadPreference = require('mongodb').ReadPreference;
 require('../mongo').connect();
 
 async function create(	

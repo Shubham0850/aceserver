@@ -1,5 +1,4 @@
 const customers = require('./customer-model');
-const ReadPreference = require('mongodb').ReadPreference;
 require('../mongo').connect();
 function getByEmail(email){
 	return customers.findOne({email});
@@ -30,7 +29,6 @@ async function create(
 		contactPersonName,
 		contactNumber,
 		email,
-		group,
 		salesPerson,
 		creditDays,
 		creditLimit ,
