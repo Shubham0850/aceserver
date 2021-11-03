@@ -4,6 +4,7 @@ const app = express();
 app.use(express.json());
 const Users = require('./Database/user/user-service');
 const isAuthinticated = require('./Helpers/authentication/authenticate');
+const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const authenticateToken = require('./Middlewares/authenticateToken');
 
 // Routes
@@ -16,9 +17,6 @@ app.post('/login',async (req,res)=>{
 	res.json({...user,accessToken});
 });
 
-app.get('/test',authenticateToken,(req,res)=>{
-	console.log(req.user);
-});
 
 
 app.all('*', (req, res, next) => {
