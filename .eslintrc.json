@@ -1,12 +1,13 @@
 {
     "env": {
-        "browser": true,
+        "node": true,
         "commonjs": true,
         "es2021": true
     },
     "parserOptions": {
         "ecmaVersion": 2021
     },
+    "extends": "eslint:recommended",
     "rules": {
         "indent": [
             "error",

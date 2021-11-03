@@ -1,16 +1,16 @@
 const users = require('./user-model');
-const ReadPreference = require('mongodb').ReadPreference;
 require('../mongo').connect();
 function getByEmail(email){
 	return users.findOne({email});
 }
 async function create(name,email,type,password){
 	const user = new users({name,email,type,password});
-	user.save().then(()=>{
+	try{
+		await user.save();
 		return true;
-	}).catch((err) => {
-		console.error(err);
-	});
+	}catch (err){
+		return false;
+	}
 }
 
 //exporting both of the function to use in the server 

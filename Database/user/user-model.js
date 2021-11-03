@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 //Designing the schema
 const userSchema = new Schema({
 	type : {type :String,required: true},
-	email: {type :String,unique:true, required: true},
+	email: {type :String,index: {unique: true}, required: true},
 	name:{type :String, required: true},
 	password: {type:String,require : true }
 });

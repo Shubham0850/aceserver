@@ -13,7 +13,9 @@ function connect(){
 		'<password>',
 		process.env.DB_PASSWORD
 	);
-	return mongoose.connect(mongoUri,{ useNewUrlParser: true ,useUnifiedTopology: true });
+	return mongoose.connect(mongoUri,{ useNewUrlParser: true 
+		,useUnifiedTopology: true,
+		autoIndex: true, });
 }
 module.exports = {
 	connect,
