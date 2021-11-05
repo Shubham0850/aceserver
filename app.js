@@ -14,6 +14,7 @@ app.get('/',(req,res)=>{
 app.post('/login',getToken);
 //admin routes (only authenticated admin can fetch this)
 app.post('/createuser',authenticateAdminToken, Admin.createUser);
+app.post('/updateuser',authenticateAdminToken,Admin.updateUser);
 app.get('/getuser',authenticateAdminToken,Admin.getUsers);
 
 app.all('*', (req, res) => {
