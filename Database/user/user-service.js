@@ -1,5 +1,8 @@
 const users = require('./user-model');
 require('../mongo').connect();
+async function getBy(query){
+	return await users.find(query);
+}
 function getByEmail(email){
 	return users.findOne({email});
 }
@@ -15,5 +18,5 @@ async function create(name,email,type,password){
 
 //exporting both of the function to use in the server 
 module.exports = {
-	getByEmail,create
+	getByEmail,create,getBy
 };
