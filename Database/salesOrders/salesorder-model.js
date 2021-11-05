@@ -5,11 +5,11 @@ const salesOrderSchema = new mongoose.Schema({
     
     salesmanId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'users'
     },
     partyId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'customers'
     },
     voucherNo:{
         type:String,
@@ -56,8 +56,8 @@ const salesOrderSchema = new mongoose.Schema({
     },
     item:[{
         itemId:{
-            type:mongoose.Schema.Types.ObjectId
-            ref:'User'
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'products'
         },
         rate:{
             type:Number
