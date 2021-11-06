@@ -6,7 +6,7 @@ const isAuthenticated = async (providedEmail,providedPassword)=>
 	if(!user) return null;
 	if(user.password === providedPassword) {
 		return {
-			id: user._id,
+			_id: user._id,
 			name: user.name,
 			email: user.email,
 			type: user.type

@@ -4,21 +4,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //Designing the schema
 const productSchema = new Schema({
-	branch : {type: String},
-	itemName  : {type: String},
-	price  : {type: Number},
-	rate   : {type: Number},
-	stockGroup   : {type: String},
-	stockCatagory : {type: String},
-	opening: {type: Number},
-	inward : {type: Number},
-	sales  : {type: Number},
-	transfer   : {type: Number},
-	closing: {type: Number},
-	masterPackQuantity   : {type: Number},
-	SubMasterPackQuantity   : {type: Number},
+	name  : {type: String},
+	description: {type: String},
+	modelNo : {type : String},
+	price   : {type: Number},
+	stockGroup   : {type: mongoose.Schema.Types.ObjectId, ref:'stockGroups'},
+	stockCatagory : {type: mongoose.Schema.Types.ObjectId, ref:'stockCatagorys'},
+	hsn : {type: String},
+	gst: {type: mongoose.Schema.Types.ObjectId, ref:'gst'},
+	barCodeNo: {type:String},
+	tallyName: {type:String},
+	brand:{type: mongoose.Schema.Types.ObjectId, ref:'brands'},
+	UOM : {type: String},
+	packSize : {type: Number},
+	weight : {type: Number},
+	CBM : {type: Number},
 }
-    
 );
 //making a mongoose model and exporting it
 const products  = mongoose.model('products',productSchema);

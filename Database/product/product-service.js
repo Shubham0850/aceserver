@@ -1,42 +1,59 @@
 const products = require('./product-model');
 require('../mongo').connect();
 
-async function create(	
-	branch='',
-	itemName='',
-	price='',
-	rate ='',
-	stockGroup ='',
-	stockCatagory='',
-	opening='',
-	inwar='',
-	sales='',
-	transfer ='',
-	closing='',
-	masterPackQuantity =0,
-	SubMasterPackQuantity =0,){
-	const product = new products({
-		branch,
-		itemName,
-		price,
-		rate ,
-		stockGroup ,
-		stockCatagory,
-		opening,
-		inwar,
-		sales,
-		transfer ,
-		closing,
-		masterPackQuantity,
-		SubMasterPackQuantity});
-	product.save().then(()=>{
+async function get(){
+	try{
+		const Products = await products.find({});
+		return Products;
+	}catch(err){
+		//handle err
+	}
+}
+
+async function create({
+	name  ='',
+	description='',
+	modelNo='',
+	price =0,
+	stockGroup,
+	stockCatagory,
+	hsn ='',
+	gst,
+	barCodeNo='',
+	tallyName='',
+	brand,
+	UOM='',
+	packSize=0,
+	weight=0 ,
+	CBM=0
+})
+{
+	try{
+		const product = new products({
+			name,
+			description,
+			modelNo,
+			price,
+			stockGroup,
+			stockCatagory,
+			hsn,
+			gst,
+			barCodeNo,
+			tallyName,
+			brand,
+			UOM,
+			packSize,
+			weight,
+			CBM
+		});
+		product.save();
 		return true;
-	}).catch((err) => {
-		console.error(err);
-	});
+	}catch(err){
+	//handel err
+	}
 }
 
 //exporting both of the function to use in the server 
 module.exports = {
-	create
+	create,get
 };
