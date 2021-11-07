@@ -34,7 +34,7 @@ app.get('/getgsts',authenticateToken,salesMan.getGsts);
 app.get('/getbrands',authenticateToken,salesMan.getBrands);
 app.get('/getstockcatagorys',authenticateToken,salesMan.getStockCatagorys);
 app.get('/getstockgroups',authenticateToken,salesMan.getStockGroups);
-app.get('/salesorder',authenticateToken,salesorder.getSalesorder);
+app.get('/getsalesorders',authenticateToken,salesorder.getSalesorder);
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
