@@ -8,6 +8,7 @@ const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
 const admin = require('./routeFunctions/Admin');
 const salesMan = require('./routeFunctions/salesman');
+const salesorder = require('./routeFunctions/salesorder/salesorder');
 
 /////////////////////Routes///////////////////////////////////
 //login route
@@ -24,6 +25,7 @@ app.post('/creategst',authenticateAdminToken,admin.createGst);
 app.post('/createstockcatagory',authenticateAdminToken,admin.createStockCatagory);
 app.post('/createstockgroup',authenticateAdminToken,admin.createStockGroup);
 app.post('/createbrand',authenticateAdminToken,admin.createBrand);
+app.post('/createsalesorder',authenticateToken,salesorder.createSalesOrder);
 
 app.get('/getuser',authenticateAdminToken,admin.getUsers);
 app.get('/getcustomers',authenticateToken,salesMan.getCustomers);
@@ -32,7 +34,7 @@ app.get('/getgsts',authenticateToken,salesMan.getGsts);
 app.get('/getbrands',authenticateToken,salesMan.getBrands);
 app.get('/getstockcatagorys',authenticateToken,salesMan.getStockCatagorys);
 app.get('/getstockgroups',authenticateToken,salesMan.getStockGroups);
-
+app.get('/salesorder',authenticateToken,salesorder.getSalesorder);
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
