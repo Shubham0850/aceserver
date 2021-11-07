@@ -33,7 +33,7 @@ const salesOrderSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	Marka:{
+	marka:{
 		type:String,
 		trim:true
 	},
@@ -80,12 +80,11 @@ const salesOrderSchema = new mongoose.Schema({
 		sgst:{
 			type:Number
 		},
-		cess:
-        {
-        	type:Number
-        }   
+		cess:{
+			type:Number
+		}   
 	}],
-	Remarks:{
+	remarks:{
 		type:String,
 		trim:true
 	},
