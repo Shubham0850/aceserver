@@ -2,7 +2,7 @@ const customers = require('./customer-model');
 require('../mongo').connect();
 async function get(){
 	try{
-		const Customers = await customers.find({});
+		const Customers = await customers.find({}).populate('salesPerson','name email');
 		return Customers;
 	}catch(err){
 		//handle err
@@ -16,7 +16,7 @@ async function create({
 	contactPersonName='',
 	contactNumber='',
 	email='',
-	salesPerson='',
+	salesPerson,
 	creditDays='',
 	creditLimit='',
 	gstType='',
