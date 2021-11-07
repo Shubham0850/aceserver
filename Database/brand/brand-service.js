@@ -2,8 +2,8 @@ const Brand = require('./brand-model');
 require('../mongo').connect();
 
 async function create(name){
-	const brand = new Brand({name});
 	try{
+		const brand = new Brand({name});
 		await brand.save();
 		return true;
 	}catch (err){

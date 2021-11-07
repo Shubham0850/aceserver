@@ -46,10 +46,10 @@ async function create({
 			weight,
 			CBM
 		});
-		product.save();
+		await product.save();
 		return true;
 	}catch(err){
-	//handel err
+		return false;
 	}
 }
 

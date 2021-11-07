@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //Designing the schema
 const productSchema = new Schema({
-	name  : {type: String},
+	name  : {type: String,index:{unique:true}},
 	description: {type: String},
 	modelNo : {type : String},
 	price   : {type: Number},

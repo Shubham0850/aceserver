@@ -1,8 +1,15 @@
-const stockGroups = require('./stockGroup-model');
+const StockGroups = require('./stockGroup-model');
 require('../mongo').connect();
-
+async function get(){
+	try{
+		const stockGroups = await StockGroups.find({});
+		return stockGroups;
+	}catch(err){
+		//handle err
+	}
+}
 async function create(name){
-	const stockGroup = new stockGroups({name});
+	const stockGroup = new StockGroups({name});
 	try{
 		await stockGroup.save();
 		return true;
@@ -12,5 +19,5 @@ async function create(name){
 }
 
 module.exports = {
-	create
+	create,get
 };

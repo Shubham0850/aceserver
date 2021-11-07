@@ -1,6 +1,13 @@
 const StockCatagory = require('./stockCatagory-model');
 require('../mongo').connect();
-
+async function get(){
+	try{
+		const stockCatagorys = await StockCatagory.find({});
+		return stockCatagorys;
+	}catch(err){
+		//handle err
+	}
+}
 async function create(name){
 	const stockCatagory = new StockCatagory({name});
 	try{
@@ -12,5 +19,5 @@ async function create(name){
 }
 
 module.exports = {
-	create
+	create,get
 };

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //Designing the schema
 const gstSchema = new Schema({
+	name: {type: String,index: {unique: true}},
 	applicableFrom : {type : Date,required: true},
 	description : {type: String},
 	calcType : {type: String},
