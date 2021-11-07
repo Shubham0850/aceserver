@@ -8,6 +8,7 @@ const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
 const admin = require('./routeFunctions/Admin');
 const salesMan = require('./routeFunctions/salesman');
+
 /////////////////////Routes///////////////////////////////////
 //login route
 app.get('/',(req,res)=>{
@@ -31,6 +32,7 @@ app.get('/getgsts',authenticateToken,salesMan.getGsts);
 app.get('/getbrands',authenticateToken,salesMan.getBrands);
 app.get('/getstockcatagorys',authenticateToken,salesMan.getStockCatagorys);
 app.get('/getstockgroups',authenticateToken,salesMan.getStockGroups);
+
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
