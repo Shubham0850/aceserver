@@ -1,9 +1,9 @@
-const salesOrder = require('../../Database/salesOrders/salesorder-model.js');
+const inward = require('../../Database/inward/inward.js');
 
 
-//GET /salesorder?status=dispatch
-//Get/salesorder?sortBy=cretedAt:desc  for recent orders
-async function getSalesorder(req,res){
+//GET /inward?status=dispatch
+//Get/inward?sortBy=cretedAt:desc  for recent orders
+async function getInward(req,res){
 	const match ={};
 	const sort={};
 	if(req.query.status)
@@ -15,7 +15,7 @@ async function getSalesorder(req,res){
 		sort[parts[0]] = parts[1] === 'desc' ? -1:1;
 	}
 	try{
-		const orders=await salesOrder.find(match)
+		const orders=await inward.find(match)
 			.sort(sort);
 		res.send(orders);
 	}catch(e){
@@ -23,20 +23,20 @@ async function getSalesorder(req,res){
 	}
 }
 
-async function  createSalesOrder(req,res){
-	const order = new salesOrder(req.body);
+async function  createInward(req,res){
+	const order = new inward(req.body);
 	try{
 		await order.save();
-		return res.status(201).send(order);
+		return res.status(200).send(order);
 	}catch(e){
 		return res.status(400).send(e);
 	}
 }
 
-async function updateSalesOrder(req,res){
+async function updateinward(req,res){
 	try{
 		const updates = Object.keys(req.body);
-		const order = await salesOrder.findOne({ _id:req.params.id });
+		const order = await inward.findOne({ _id:req.params.id });
 		if(!order){
 			return res.status(404).send();
 		}
@@ -49,9 +49,9 @@ async function updateSalesOrder(req,res){
 	}
 }
 
-async function deleteSalesOrder(req,res){
+async function deleteinward(req,res){
 	try{
-		const order = await salesOrder.findOneAndDelete({_id:req.params.id});
+		const order = await inward.findOneAndDelete({_id:req.params.id});
 		if(!order)
 			return res.status(404).send();
 		res.send(order);
@@ -60,10 +60,9 @@ async function deleteSalesOrder(req,res){
 	}
 }
 
-
 module.exports = {
-	createSalesOrder,
-	getSalesorder,
-	updateSalesOrder,
-	deleteSalesOrder
+	createInward,
+	getInward,
+	updateinward,
+	deleteinward
 };

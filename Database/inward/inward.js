@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-const salesOrderSchema = new mongoose.Schema({
+const inwardSchema = new mongoose.Schema({
     
 	salesman:{
 		type:mongoose.Schema.Types.ObjectId,
@@ -8,7 +8,11 @@ const salesOrderSchema = new mongoose.Schema({
 	},
 	party:{
 		type:mongoose.Schema.Types.ObjectId,
-		ref:'customers'
+		ref:'seller'
+	},
+	invoiceNo:{
+		type:String,
+		trim:true
 	},
 	voucherNo:{
 		type:String,
@@ -57,12 +61,17 @@ const salesOrderSchema = new mongoose.Schema({
 		itemId:{
 			type:mongoose.Schema.Types.ObjectId,
 			ref:'products',
-
 		},
 		rate:{
 			type:Number
 		},
 		quantity:{
+			type:Number
+		},
+		master:{
+			type:Number
+		},
+		submaster:{
 			type:Number
 		},
 		discountPercentage:{
@@ -96,5 +105,5 @@ const salesOrderSchema = new mongoose.Schema({
 	timestamps:true
 });
 
-const Salesorder = mongoose.model('Salesorder',salesOrderSchema);
-module.exports = Salesorder;
+const inward = mongoose.model('inward',inwardSchema);
+module.exports = inward;
