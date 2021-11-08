@@ -40,7 +40,6 @@ async function updateById(_id,updateData){
 		return false;
 	}
 }
-//exporting both of the function to use in the server 
 module.exports = {
 	getByEmail,create,getBy,updateById,getById
 };

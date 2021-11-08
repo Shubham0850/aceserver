@@ -8,6 +8,7 @@ const createStockGroup = require('./createStockGroup');
 const createBrand = require('./createBrand');
 const createStockCatagory = require('./createStockCatagory');
 const deleteUser = require('./deleteUser');
+const updateCustomer = require('./updateCustomer');
 module.exports = {
 	createUser,
 	getUsers,
@@ -18,5 +19,6 @@ module.exports = {
 	createStockGroup,
 	createBrand,
 	createStockCatagory,
-	deleteUser
+	deleteUser,
+	updateCustomer
 };

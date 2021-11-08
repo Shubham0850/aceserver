@@ -20,6 +20,10 @@ const productSchema = new Schema({
 	packSize : {type: Number},
 	weight : {type: Number},
 	CBM : {type: Number},
+	openingQuantity: {type: Number},
+	inwardQuantity: {type :Number,default:0},
+	sellQuantity: {type:Number,default:0},
+	transferQuantity: {type: Number,default:0},
 }
 );
 //making a mongoose model and exporting it

@@ -17,7 +17,8 @@ const createProduct = async (req,res)=>{
 		UOM,
 		packSize,
 		weight,
-		CBM
+		CBM,
+		openingQuantity=0
 	} = req.body;
 	const isCreated = await Product.create({
 		name,
@@ -34,7 +35,8 @@ const createProduct = async (req,res)=>{
 		UOM,
 		packSize,
 		weight,
-		CBM
+		CBM,
+		openingQuantity
 	});
 	if(isCreated) return res.status(201).json({message:SUCCESS_MSG});
 	else{

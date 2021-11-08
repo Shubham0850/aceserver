@@ -27,6 +27,7 @@ app.post('/createstockgroup',authenticateAdminToken,admin.createStockGroup);
 app.post('/createbrand',authenticateAdminToken,admin.createBrand);
 app.post('/createsalesorder',authenticateToken,salesorder.createSalesOrder);
 app.post('/deleteuser',authenticateAdminToken,admin.deleteUser);
+app.post('/updatecustomer',authenticateAdminToken,admin.updateCustomer);
 
 app.get('/getuser',authenticateAdminToken,admin.getUsers);
 app.get('/getcustomers',authenticateToken,salesMan.getCustomers);
