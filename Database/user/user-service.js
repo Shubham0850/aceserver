@@ -14,9 +14,9 @@ async function getById(_id){
 		//handle err
 	}
 }
-function getByEmail(email){
+async function getByEmail(email){
 	try{
-		return users.findOne({email});
+		return await users.findOne({email});
 	}
 	catch(err){
 		return null;
