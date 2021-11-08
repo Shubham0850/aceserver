@@ -1,11 +1,9 @@
-const express = require('express');
-const router = new express.Router();
 const salesOrder = require('../../Database/salesOrders/salesorder-model.js');
 
 
 //GET /salesorder?status=dispatch
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
-router.get('/salesorder',async(req,res)=>{
+async function getSalesorder(req,res){
 	const match ={};
 	const sort={};
 	if(req.query.status)
@@ -23,9 +21,9 @@ router.get('/salesorder',async(req,res)=>{
 	}catch(e){
 		res.status(500).send(e);
 	}
-});
+}
 
-router.post('/createorder',async (req,res)=>{
+async function  createSalesOrder(req,res){
 	const order = new salesOrder(req.body);
 	try{
 		await order.save();
@@ -33,7 +31,9 @@ router.post('/createorder',async (req,res)=>{
 	}catch(e){
 		return res.status(400).send(e);
 	}
- 
-});
+}
 
-module.exports = router;
+module.exports = {
+	createSalesOrder,
+	getSalesorder
+};
