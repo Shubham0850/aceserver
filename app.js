@@ -6,14 +6,12 @@ app.use(cors());
 const authenticateToken = require('./Middlewares/authenticateToken');
 const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
-const {createSalesOrder,getSalesorder,updateSalesOrder,deleteSalesOrder} = require('./routeFunctions/salesorder/salesorder');
-const{createInward,getInward,updateinward,deleteinward} = require('./routeFunctions/inward/inward');
+const inward  = require('./routeFunctions/inward/inward');
 const admin = require('./routeFunctions/Admin');
 const salesMan = require('./routeFunctions/salesman');
 const salesorder = require('./routeFunctions/salesorder/salesorder');
 
 /////////////////////Routes///////////////////////////////////
-//login route
 app.get('/',(req,res)=>{
 	res.json({message:'hello'});
 });
@@ -30,17 +28,15 @@ app.post('/createbrand',authenticateAdminToken,admin.createBrand);
 app.post('/createsalesorder',authenticateToken,salesorder.createSalesOrder);
 app.post('/deleteuser',authenticateAdminToken,admin.deleteUser);
 app.post('/updatecustomer',authenticateAdminToken,admin.updateCustomer);
+app.post('/createsalesorder',authenticateToken,salesorder.createSalesOrder);
+app.post('/updatesalesorder/:id',authenticateAdminToken,salesorder.updateSalesOrder);
+app.post('/deletesalesorder/:id',authenticateAdminToken, salesorder.deleteSalesOrder);
+app.post('/createInward',authenticateToken,inward.createInward);
+app.post('/updateinward/:id',authenticateAdminToken,inward.updateinward);
+app.post('/deleteinward/:id',authenticateAdminToken,inward.deleteinward);
 
-app.post('/createsalesorder',createSalesOrder);
-app.get('/getsalesorder',getSalesorder);
-app.patch('/updatesalesorder/:id',updateSalesOrder);
-app.delete('/deletesalesorder/:id',deleteSalesOrder);
-
-app.post('/createInward',createInward);
-app.get('/getinward',getInward);
-app.patch('/updateinward/:id',updateinward);
-app.delete('/deleteinward/:id',deleteinward);
-
+app.get('/getinward',authenticateToken,inward.getInward);
+app.get('/getsalesorder',authenticateToken, salesorder.getSalesorder);
 app.get('/getuser',authenticateAdminToken,admin.getUsers);
 app.get('/getcustomers',authenticateToken,salesMan.getCustomers);
 app.get('/getproducts',authenticateToken,salesMan.getProducts);
