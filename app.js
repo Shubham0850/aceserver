@@ -7,6 +7,7 @@ const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
 const Admin = require('./routeFunctions/Admin');
 const {createSalesOrder , getSalesorder} = require('./routeFunctions/salesorder/salesorder');
+const{ createInward,getInward } = require('./routeFunctions/inward/inward');
 /////////////////////Routes///////////////////////////////////
 //login route
 app.get('/',(req,res)=>{
@@ -18,6 +19,9 @@ app.post('/createuser',authenticateAdminToken, Admin.createUser);
 
 app.post('/createsalesorder',createSalesOrder);
 app.get('/getsalesorder',getSalesorder);
+
+app.post('/createInward',createInward);
+app.get('/getinward',getInward);
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
