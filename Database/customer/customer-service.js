@@ -1,52 +1,61 @@
 const customers = require('./customer-model');
 require('../mongo').connect();
-function getByEmail(email){
-	return customers.findOne({email});
+async function get(){
+	try{
+		const Customers = await customers.find({}).populate('salesPerson','name email');
+		return Customers;
+	}catch(err){
+		//handle err
+	}
 }
 
-async function create(
+async function create({
 	branch='',
-	code,
-	group='',
-	name ='',
+	ledgerGroup='',
+	name='',
 	contactPersonName='',
 	contactNumber='',
 	email='',
-	salesPerson='',
+	salesPerson,
 	creditDays='',
-	creditLimit ='',
+	creditLimit='',
 	gstType='',
 	gstNumber='',
 	state='',
-	address ='',
+	address='',
+	pincode='',
 	blocking=false,
 	billType='',
-	openingAmount=0){
-	const customer = new customers({branch,
-		code,
-		group,
-		name ,
-		contactPersonName,
-		contactNumber,
-		email,
-		salesPerson,
-		creditDays,
-		creditLimit ,
-		gstType,
-		gstNumber,
-		state,
-		address ,
-		blocking,
-		billType,
-		openingAmount});
-	customer.save().then(()=>{
+	accounts=[]
+}){
+	try{
+		const customer = new customers({
+			branch,
+			ledgerGroup,
+			name ,
+			contactPersonName,
+			contactNumber,
+			email,
+			salesPerson,
+			creditDays,
+			creditLimit ,
+			gstType,
+			gstNumber,
+			state,
+			pincode,
+			address ,
+			blocking,
+			billType,
+			accounts
+		});
+		await customer.save();
 		return true;
-	}).catch((err) => {
-		console.error(err);
-	});
+	}catch(err){
+		//handle err
+	}
 }
 
 //exporting both of the function to use in the server 
 module.exports = {
-	getByEmail,create
+	get,create
 };

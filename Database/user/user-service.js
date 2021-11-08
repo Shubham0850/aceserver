@@ -1,7 +1,26 @@
 const users = require('./user-model');
 require('../mongo').connect();
-function getByEmail(email){
-	return users.findOne({email});
+async function getBy(query){
+	try{
+		return await users.find(query);
+	}catch(err){
+		//handle err
+	}
+}
+async function getById(_id){
+	try{
+		return await users.findById({_id});
+	}catch(err){
+		//handle err
+	}
+}
+async function getByEmail(email){
+	try{
+		return await users.findOne({email});
+	}
+	catch(err){
+		return null;
+	}
 }
 async function create(name,email,type,password){
 	const user = new users({name,email,type,password});
@@ -12,8 +31,15 @@ async function create(name,email,type,password){
 		return false;
 	}
 }
-
-//exporting both of the function to use in the server 
+async function updateById(_id,updateData){
+	try{
+		const updatedUser = await users.findByIdAndUpdate({_id},{
+			$set:updateData});
+		return updatedUser;
+	}catch(err){
+		return false;
+	}
+}
 module.exports = {
-	getByEmail,create
+	getByEmail,create,getBy,updateById,getById
 };
