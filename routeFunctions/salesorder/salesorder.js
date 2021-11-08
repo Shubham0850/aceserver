@@ -4,7 +4,6 @@ const salesOrder = require('../../Database/salesOrders/salesorder-model.js');
 
 
 //GET /salesorder?status=dispatch
-//GET/salesorder?limit=10&skip=20
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
 router.get('/salesorder',async(req,res)=>{
 	const match ={};
@@ -19,8 +18,6 @@ router.get('/salesorder',async(req,res)=>{
 	}
 	try{
 		const orders=await salesOrder.find(match)
-			.limit(parseInt(req.query.limit))
-			.skip(parseInt(req.query.skip))
 			.sort(sort);
 		res.send(orders);
 	}catch(e){
