@@ -82,6 +82,10 @@ const salesOrderSchema = new mongoose.Schema({
 		},
 		cess:{
 			type:Number
+		},
+		hsnCode:{
+			type:String,
+		    trim:true
 		}   
 	}],
 	remarks:{
