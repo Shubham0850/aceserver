@@ -33,7 +33,36 @@ async function  createInward(req,res){
 	}
 }
 
+async function updateinward(req,res){
+	try{
+		const updates = Object.keys(req.body);
+		const order = await inward.findOne({ _id:req.params.id });
+		if(!order){
+			return res.status(404).send();
+		}
+		updates.forEach(update=>order[update]=req.body[update]);
+		await order.save();
+		res.send(order);
+	}catch(e){
+		res.status(400).send(e);
+
+	}
+}
+
+async function deleteinward(req,res){
+	try{
+		const order = await inward.findOneAndDelete({_id:req.params.id});
+		if(!order)
+			return res.status(404).send();
+		res.send(order);
+	}catch(e){
+		res.status(500).send();
+	}
+}
+
 module.exports = {
 	createInward,
-	getInward
+	getInward,
+	updateinward,
+	deleteinward
 };

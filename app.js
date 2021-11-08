@@ -6,8 +6,8 @@ app.use(cors());
 const authenticateAdminToken = require('./Middlewares/authenticateAdminToken');
 const getToken = require('./routeFunctions/getToken/getToken');
 const Admin = require('./routeFunctions/Admin');
-const {createSalesOrder , getSalesorder} = require('./routeFunctions/salesorder/salesorder');
-const{ createInward,getInward } = require('./routeFunctions/inward/inward');
+const {createSalesOrder,getSalesorder,updateSalesOrder,deleteSalesOrder} = require('./routeFunctions/salesorder/salesorder');
+const{createInward,getInward,updateinward,deleteinward} = require('./routeFunctions/inward/inward');
 /////////////////////Routes///////////////////////////////////
 //login route
 app.get('/',(req,res)=>{
@@ -19,9 +19,13 @@ app.post('/createuser',authenticateAdminToken, Admin.createUser);
 
 app.post('/createsalesorder',createSalesOrder);
 app.get('/getsalesorder',getSalesorder);
+app.patch('/updatesalesorder/:id',updateSalesOrder);
+app.delete('/deletesalesorder/:id',deleteSalesOrder);
 
 app.post('/createInward',createInward);
 app.get('/getinward',getInward);
+app.patch('/updateinward/:id',updateinward);
+app.delete('/deleteinward/:id',deleteinward);
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
