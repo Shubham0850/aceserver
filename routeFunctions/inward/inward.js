@@ -24,7 +24,10 @@ async function getInward(req,res){
 }
 
 async function  createInward(req,res){
-	const order = new inward(req.body);
+	const order = new inward({
+		...req.body,
+		salesman:req.user._id
+	});
 	try{
 		await order.save();
 		return res.status(200).send(order);

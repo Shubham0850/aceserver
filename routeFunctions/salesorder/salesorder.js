@@ -24,7 +24,10 @@ async function getSalesorder(req,res){
 }
 
 async function  createSalesOrder(req,res){
-	const order = new salesOrder(req.body);
+	const order = new salesOrder({
+		...req.body,
+		salesman:req.user._id
+	});
 	try{
 		await order.save();
 		return res.status(201).send(order);
