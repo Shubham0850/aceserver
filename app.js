@@ -31,9 +31,10 @@ app.post('/updatecustomer',authenticateAdminToken,admin.updateCustomer);
 app.post('/createsalesorder',authenticateToken,salesorder.createSalesOrder);
 app.post('/updatesalesorder/:id',authenticateAdminToken,salesorder.updateSalesOrder);
 app.post('/deletesalesorder/:id',authenticateAdminToken, salesorder.deleteSalesOrder);
-app.post('/createInward',authenticateToken,inward.createInward);
+app.post('/createinward',authenticateToken,inward.createInward);
 app.post('/updateinward/:id',authenticateAdminToken,inward.updateinward);
 app.post('/deleteinward/:id',authenticateAdminToken,inward.deleteinward);
+app.post('/createbarcode/:id',authenticateToken,salesMan.createBarcode);
 
 app.get('/getinward',authenticateToken,inward.getInward);
 app.get('/getsalesorder',authenticateToken, salesorder.getSalesorder);

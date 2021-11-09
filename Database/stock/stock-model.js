@@ -11,7 +11,7 @@ const stockSchema = new Schema({
 	code: {type:String},
 	quantity: {type:Number},
 	dispatchedIn: {type: mongoose.Schema.ObjectId,ref:'salesorder'}
-});
+},{timestamps:true});
 //making a mongoose model and exporting it
 const stock  = mongoose.model('stock',stockSchema);
 module.exports = stock;

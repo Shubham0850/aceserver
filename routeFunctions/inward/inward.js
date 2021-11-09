@@ -26,7 +26,8 @@ async function getInward(req,res){
 async function  createInward(req,res){
 	const order = new inward({
 		...req.body,
-		salesman:req.user._id
+		salesman:req.user._id,
+		status:'pendingBarcode'
 	});
 	try{
 		await order.save();
