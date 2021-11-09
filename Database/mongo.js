@@ -13,9 +13,14 @@ function connect(){
 		'<password>',
 		process.env.DB_PASSWORD
 	);
-	return mongoose.connect(mongoUri,{ useNewUrlParser: true 
-		,useUnifiedTopology: true,
-		autoIndex: true, });
+	try{
+		return mongoose.connect(mongoUri,{ useNewUrlParser: true 
+			,useUnifiedTopology: true,
+			autoIndex: true, });
+	}
+	catch(err){
+		console.log('heere',err);
+	}
 }
 module.exports = {
 	connect,
