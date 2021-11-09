@@ -94,7 +94,7 @@ const inwardSchema = new mongoose.Schema({
 		},
 		hsnCode:{
 			type:String,
-		    trim:true
+			trim:true
 		}   
 	}],
 	remarks:{
