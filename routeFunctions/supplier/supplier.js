@@ -1,22 +1,16 @@
 const Supplier = require('../../Database/supplier/supplier');
 
 
-//GET /supplier?key=value
+//GET /supplier
 //Get/supplier?sortBy=cretedAt:desc  for recent orders
 async function getSupplier(req,res){
-	const match ={};
 	const sort={};
-	if(req.query.status)
-	{
-		match.status=req.query.status;
-	}
 	if(req.query.sortBy){
 		const parts=req.query.sortBy.split(':');
 		sort[parts[0]] = parts[1] === 'desc' ? -1:1;
 	}
 	try{
-		const party=await Supplier.find(match)
-			.sort(sort);
+		const party=await Supplier.find();
 		res.send(party);
 	}catch(e){
 		res.status(500).send(e);
