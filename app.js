@@ -10,6 +10,7 @@ const inward  = require('./routeFunctions/inward/inward');
 const admin = require('./routeFunctions/Admin');
 const salesMan = require('./routeFunctions/salesman');
 const salesorder = require('./routeFunctions/salesorder/salesorder');
+const supplier = require('./routeFunctions/supplier/supplier');
 
 /////////////////////Routes///////////////////////////////////
 app.get('/',(req,res)=>{
@@ -35,7 +36,11 @@ app.post('/createinward',authenticateToken,inward.createInward);
 app.post('/updateinward/:id',authenticateAdminToken,inward.updateinward);
 app.post('/deleteinward/:id',authenticateAdminToken,inward.deleteinward);
 app.post('/createbarcode/:id',authenticateToken,salesMan.createBarcode);
+app.post('/createsupplier',supplier.createSupplier);
+app.post('/updatesupplier',supplier.updateSupplier);
+app.post('/deletesupplier',supplier.deleteSupplier);
 
+app.post('/getsupplier',supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);
 app.get('/getsalesorder',authenticateToken, salesorder.getSalesorder);
 app.get('/getuser',authenticateAdminToken,admin.getUsers);
