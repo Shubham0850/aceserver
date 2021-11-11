@@ -38,8 +38,7 @@ const inwardSchema = new mongoose.Schema({
 		trim:true
 	},
 	marka:{
-		type:String,
-		trim:true
+		type:Number,
 	},
 	account:{
 		type:String,
@@ -57,45 +56,59 @@ const inwardSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	item:[{
+	items:[{
 		itemId:{
 			type:mongoose.Schema.Types.ObjectId,
 			ref:'products',
 		},
 		rate:{
-			type:Number
+			type: Number,
+			default:0
 		},
-		quantity:{
-			type:Number
+		masterPack:{
+			type: Number,
+			default:0
 		},
-		master:{
-			type:Number
+		subMasterPack:{
+			type: Number,
+			default:0
 		},
-		submaster:{
-			type:Number
+		masterPackQuantity:{
+			type: Number,
+			default:0
+		},
+		subMasterPackQuantity:{
+			type: Number,
+			default:0
+		},
+		loose: {
+			type: Number,
+			default:0
 		},
 		discountPercentage:{
-			type:Number
+			type: Number,
+			default:0
 		},
 		grossAmount:{
-			type:Number
+			type: Number,
+			default:0
 		},
 		igst:{
-			type:Number
+			type: Number,
+			default:0
 		}, 
 		cgst:{
-			type:Number
+			type: Number,
+			default:0
 		}, 
 		sgst:{
-			type:Number
+			type: Number,
+			default:0
 		},
 		cess:{
-			type:Number
-		},
-		hsnCode:{
-			type:String,
-			trim:true
-		}   
+			type: Number,
+			default:0
+		}, 
 	}],
 	remarks:{
 		type:String,
