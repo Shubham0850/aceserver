@@ -10,7 +10,9 @@ async function getInward(req,res){
 		match.status=req.query.status;
 	}
 	try{
-		const orders=await inward.find(match);
+		const orders=await inward.find(match)
+			.populate('party','name')
+			.populate('salesman','name email');
 		res.send(orders);
 	}catch(e){
 		res.status(500).send(e);

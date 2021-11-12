@@ -8,7 +8,7 @@ const inwardSchema = new mongoose.Schema({
 	},
 	party:{
 		type:mongoose.Schema.Types.ObjectId,
-		ref:'supplier'
+		ref:'suppliers'
 	},
 	invoiceNo:{
 		type:String,
