@@ -1,6 +1,7 @@
 const InwardModel = require('../../Database/inward/inward');
 const StockService = require('../../Database/stock/stock-service');
 const InwardService = require('../../Database/inward/inward-service');
+const ProductServices = require('../../Database/product/product-service');
 const createBarcode = async (req,res)=>{
 	try{
 		const inwardId = req.params.id;
@@ -32,6 +33,8 @@ const createBarcode = async (req,res)=>{
 				inwardFrom:inwardId,
 				isLoose:true
 			});
+			const totalQuantity = item.masterPack*item.masterPackQuantity  + item.subMasterPack*item.subMasterPackQuantity + item.loose;
+			await ProductServices.incrimentInward({_id: item.productId,count:totalQuantity});
 		}
 		await InwardService.chngStatus({_id:inwardId,status:'barcodeGenerated'});
 		res.json({message:'success'});
