@@ -36,11 +36,11 @@ app.post('/createinward',authenticateToken,inward.createInward);
 app.post('/updateinward/:id',authenticateAdminToken,inward.updateinward);
 app.post('/deleteinward/:id',authenticateAdminToken,inward.deleteinward);
 app.post('/createbarcode/:id',authenticateToken,salesMan.createBarcode);
-app.post('/createsupplier',supplier.createSupplier);
-app.post('/updatesupplier/:id',supplier.updateSupplier);
-app.post('/deletesupplier/:id',supplier.deleteSupplier);
+app.post('/createsupplier',authenticateAdminToken,supplier.createSupplier);
+app.post('/updatesupplier/:id',authenticateAdminToken,supplier.updateSupplier);
+app.post('/deletesupplier/:id',authenticateAdminToken,supplier.deleteSupplier);
 
-app.get('/getsupplier',supplier.getSupplier);
+app.get('/getsupplier',authenticateToken,supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);
 app.get('/getsalesorder',authenticateToken, salesorder.getSalesorder);
 app.get('/getuser',authenticateAdminToken,admin.getUsers);
