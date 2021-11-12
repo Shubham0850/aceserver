@@ -39,6 +39,7 @@ app.post('/createbarcode/:id',authenticateToken,salesMan.createBarcode);
 app.post('/createsupplier',authenticateAdminToken,supplier.createSupplier);
 app.post('/updatesupplier/:id',authenticateAdminToken,supplier.updateSupplier);
 app.post('/deletesupplier/:id',authenticateAdminToken,supplier.deleteSupplier);
+app.post('/confirmsalesorder/:id',authenticateAdminToken,salesorder.confirmSalesOrder);
 
 app.get('/getsupplier',authenticateToken,supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);

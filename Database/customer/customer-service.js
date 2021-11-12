@@ -55,7 +55,26 @@ async function create({
 	}
 }
 
+async function addIntoLedger({_id,type,depositType,amount=0}){
+	try{
+		await customers.findOneAndUpdate({_id},{
+			$push:{
+				ledger: {
+					type,
+					depositType,
+					amount
+				}
+			}
+		});
+
+	}catch(err){
+		console.log(err);
+		//handle err
+	}
+}
 //exporting both of the function to use in the server 
 module.exports = {
-	get,create
+	get,
+	create,
+	addIntoLedger
 };

@@ -4,7 +4,7 @@ const getGsts = require('./getGsts');
 const getStockGroups = require('./getStockGroups');
 const getBrands = require('./getBrands');
 const getStockCatagorys = require('./getStockCatagorys');
-const createBarcode = require('./createBarcode');
+const createBarcode = require('../stock/createBarcode');
 module.exports = {
 	getCustomers,
 	getProducts,

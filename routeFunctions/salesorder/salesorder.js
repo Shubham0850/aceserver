@@ -1,5 +1,7 @@
-const salesOrder = require('../../Database/salesOrders/salesorder-model.js');
-
+const SalesorderModel = require('../../Database/salesOrders/salesorder-model.js');
+const calculateGst = require('../../Helpers/calculation/calculateGst.js');
+const CustomerServices = require('../../Database/customer/customer-service');
+const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED } = require('./constants.js');
 
 //GET /salesorder?status=dispatch
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
@@ -15,7 +17,7 @@ async function getSalesorder(req,res){
 		sort[parts[0]] = parts[1] === 'desc' ? -1:1;
 	}
 	try{
-		const orders=await salesOrder.find(match)
+		const orders=await SalesorderModel.find(match)
 			.sort(sort);
 		res.send(orders);
 	}catch(e){
@@ -24,9 +26,10 @@ async function getSalesorder(req,res){
 }
 
 async function  createSalesOrder(req,res){
-	const order = new salesOrder({
+	const order = new SalesorderModel({
 		...req.body,
-		salesman:req.user._id
+		salesman:req.user._id,
+		status:PENDING_CONFIRMATION
 	});
 	try{
 		await order.save();
@@ -39,7 +42,7 @@ async function  createSalesOrder(req,res){
 async function updateSalesOrder(req,res){
 	try{
 		const updates = Object.keys(req.body);
-		const order = await salesOrder.findOne({ _id:req.params.id });
+		const order = await SalesorderModel.findOne({ _id:req.params.id });
 		if(!order){
 			return res.status(404).send();
 		}
@@ -54,7 +57,7 @@ async function updateSalesOrder(req,res){
 
 async function deleteSalesOrder(req,res){
 	try{
-		const order = await salesOrder.findOneAndDelete({_id:req.params.id});
+		const order = await SalesorderModel.findOneAndDelete({_id:req.params.id});
 		if(!order)
 			return res.status(404).send();
 		res.send(order);
@@ -62,11 +65,52 @@ async function deleteSalesOrder(req,res){
 		res.status(500).send();
 	}
 }
+async function calculateTotalAmount(salesorder){
+	var totalAmount = 0;
+	for(let key in salesorder.items){
+		console.log(key);
+		let item = salesorder.items[key];
+		const quantity = item.quantity;
+		let taxes = calculateGst({amount: quantity*item.rate,
+			sgst:item.sgst,
+			igst:item.igst,
+			cgst:item.cgst,
+			cess:item.cess
+		});
+		totalAmount = totalAmount + quantity*item.rate + taxes;
+	}
+	return totalAmount;
+}
+async function confirmSalesOrder(req,res){
+	try{
+		const salesorderId = req.params.id;
 
-
+		const prevOrder = await SalesorderModel.findOneAndUpdate({_id:salesorderId},{
+			$set:{
+				status:CONFIRMED
+			}
+		});
+		if(prevOrder.status!==PENDING_CONFIRMATION){
+			return res.json({message:FAILED});
+		}
+		const order = await SalesorderModel.findById({_id:salesorderId});
+		console.log(order.items);
+		const totalAmount = await calculateTotalAmount(order);
+		await CustomerServices.addIntoLedger({
+			_id:order.party,
+			type:'purchase',
+			depositType:'Cr',
+			amount:totalAmount
+		});
+		return res.json({message:SUCCESS});
+	}catch(err){
+		res.sendStatus(500);
+	}
+}
 module.exports = {
 	createSalesOrder,
 	getSalesorder,
 	updateSalesOrder,
-	deleteSalesOrder
+	deleteSalesOrder,
+	confirmSalesOrder
 };

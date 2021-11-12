@@ -53,39 +53,47 @@ const salesOrderSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	item:[{
+	items:[{
 		itemId:{
 			type:mongoose.Schema.Types.ObjectId,
 			ref:'products',
 
 		},
 		rate:{
-			type:Number
+			type:Number,
+			default:0,
 		},
 		quantity:{
-			type:Number
+			type:Number,
+			default:0,
 		},
 		discountPercentage:{
-			type:Number
+			type:Number,
+			default:0,
 		},
 		grossAmount:{
-			type:Number
+			type:Number,
+			default:0
 		},
 		igst:{
-			type:Number
+			type:Number,
+			default:0
 		}, 
 		cgst:{
-			type:Number
+			type:Number,
+			default:0
 		}, 
 		sgst:{
-			type:Number
+			type:Number,
+			default:0
 		},
 		cess:{
-			type:Number
+			type:Number,
+			default:0
 		},
 		hsnCode:{
 			type:String,
-		    trim:true
+			trim:true
 		}   
 	}],
 	remarks:{

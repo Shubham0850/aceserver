@@ -11,6 +11,16 @@ const accountSchema = new Schema({
 	gstNumber : {type : String}
 });
 
+const ledgerSchema = new Schema({
+	type:{type:String},
+	depositType: {type: String,
+		enum: ['Dr','Cr'],
+		required : true},
+	amount: {type:Number,
+		required:true},
+},{
+	timestamps:true
+});
 const customerSchema = new Schema({
 	branch: {type: String},
 	ledgerGroup: {type: String},
@@ -28,7 +38,8 @@ const customerSchema = new Schema({
 	pincode :{type: String},
 	blocking: {type: Boolean,default:false},
 	billType: {type: String},
-	accounts: [accountSchema]
+	accounts: [accountSchema],
+	ledger: [ledgerSchema]
 });
 //making a mongoose model and exporting it
 const customers  = mongoose.model('customer',customerSchema);
