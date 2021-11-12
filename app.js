@@ -46,6 +46,7 @@ app.post('/packunpack',authenticateToken,packandUnpack);
 app.post('/createtransporter',authenticateAdminToken,Transporter.create);
 app.post('/updatetransporter/:id',authenticateAdminToken,Transporter.updateTransporter);
 app.post('/deletetransporter/:id',authenticateAdminToken,Transporter.deleteTransporter);
+app.post('/dispatch/:id',authenticateToken,salesorder.dispatch);
 
 app.get('/getsupplier',authenticateToken,supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);

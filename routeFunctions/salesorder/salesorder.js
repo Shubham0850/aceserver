@@ -1,7 +1,8 @@
 const SalesorderModel = require('../../Database/salesOrders/salesorder-model.js');
 const calculateGst = require('../../Helpers/calculation/calculateGst.js');
+const StockService = require('../../Database/stock/stock-service');
 const CustomerServices = require('../../Database/customer/customer-service');
-const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED } = require('./constants.js');
+const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED, DISPATCHED } = require('./constants.js');
 
 //GET /salesorder?status=dispatch
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
@@ -81,6 +82,7 @@ async function calculateTotalAmount(salesorder){
 	}
 	return totalAmount;
 }
+
 async function confirmSalesOrder(req,res){
 	try{
 		const salesorderId = req.params.id;
@@ -107,10 +109,49 @@ async function confirmSalesOrder(req,res){
 		res.sendStatus(500);
 	}
 }
+
+async function dispatch(req,res){
+	try{
+		const orderId = req.params.id;
+		const {items} = req.body;
+		const order = await SalesorderModel.findByIdAndUpdate({_id:orderId},{
+			$set:{
+				items,
+				status:DISPATCHED
+			}
+		});
+		for(let key in items){
+			var quantityWithOutLoose = 0;
+			let item = items[key];
+			for(let i in item.dispatchedBatches){
+				let code = item.dispatchedBatches[i];
+				if(code!=='loose') {
+					quantityWithOutLoose += await StockService.getQuantity({code});
+					await StockService.decrementStock({code});
+
+				}
+			}
+			if(item.quantity!==quantityWithOutLoose){
+				await StockService.decrementStock({code:'loose',
+					quantity:item.quantity - quantityWithOutLoose,
+					branch:order.branch,
+					godown:order.godown
+				});
+			}
+		}
+
+		return res.json({message:SUCCESS});
+	}catch(err){
+		//handle err
+		return res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	createSalesOrder,
 	getSalesorder,
 	updateSalesOrder,
 	deleteSalesOrder,
-	confirmSalesOrder
+	confirmSalesOrder,
+	dispatch
 };
