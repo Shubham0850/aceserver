@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-
 const salesOrderSchema = new mongoose.Schema({
     
 	salesman:{

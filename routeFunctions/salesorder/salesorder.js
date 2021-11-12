@@ -8,18 +8,14 @@ const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED, DISPATCHED } = require
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
 async function getSalesorder(req,res){
 	const match ={};
-	const sort={};
 	if(req.query.status)
 	{
 		match.status=req.query.status;
 	}
-	if(req.query.sortBy){
-		const parts=req.query.sortBy.split(':');
-		sort[parts[0]] = parts[1] === 'desc' ? -1:1;
-	}
 	try{
 		const orders=await SalesorderModel.find(match)
-			.sort(sort);
+			.populate('party','name')
+			.populate('salesman','name email');
 		res.send(orders);
 	}catch(e){
 		res.status(500).send(e);

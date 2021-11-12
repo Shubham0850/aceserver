@@ -42,5 +42,5 @@ const customerSchema = new Schema({
 	ledger: [ledgerSchema]
 });
 //making a mongoose model and exporting it
-const customers  = mongoose.model('customer',customerSchema);
+const customers  = mongoose.model('customers',customerSchema);
 module.exports = customers;
