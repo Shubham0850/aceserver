@@ -9,7 +9,8 @@ const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwar
 				await newPack.save();
 			}
 			else{
-				const newPack = new StockModel({quantity,productId,branch,godown,inwardFrom});
+				const code = Date.now();
+				const newPack = new StockModel({quantity,productId,branch,godown,inwardFrom,code});
 				await newPack.save();
 			}
 		}

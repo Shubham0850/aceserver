@@ -6,6 +6,9 @@ const createBarcode = async (req,res)=>{
 	try{
 		const inwardId = req.params.id;
 		const inward = await InwardModel.findById({_id:inwardId});
+		if(inward.status!=='pendingBarcode'){
+			return res.json({message:'failed'});
+		}
 		for(var i = 0;i<inward.items.length;i++){
 			const item = inward.items[i];
 			await StockService.createPacks({
@@ -13,7 +16,7 @@ const createBarcode = async (req,res)=>{
 				branch: inward.branch,
 				quantity: item.masterPackQuantity,
 				numberOfPacks: item.masterPack,
-				productId: item.productId,
+				productId: item.itemId,
 				inwardFrom:inwardId
 			});
 			await StockService.createPacks({
@@ -21,7 +24,7 @@ const createBarcode = async (req,res)=>{
 				branch: inward.branch,
 				quantity: item.subMasterPackQuantity,
 				numberOfPacks: item.subMasterPack,
-				productId: item.productId,
+				productId: item.itemId,
 				inwardFrom:inwardId
 			});
 			StockService.createPacks({
@@ -29,17 +32,18 @@ const createBarcode = async (req,res)=>{
 				branch: inward.branch,
 				quantity: item.loose,
 				numberOfPacks: 1,
-				productId: item.productId,
+				productId: item.itemId,
 				inwardFrom:inwardId,
 				isLoose:true
 			});
 			const totalQuantity = item.masterPack*item.masterPackQuantity  + item.subMasterPack*item.subMasterPackQuantity + item.loose;
-			await ProductServices.incrimentInward({_id: item.productId,count:totalQuantity});
+			await ProductServices.incrimentInward({_id: item.itemId,count:totalQuantity});
 		}
 		await InwardService.chngStatus({_id:inwardId,status:'barcodeGenerated'});
-		res.json({message:'success'});
+		return res.json({message:'success'});
 	}catch(err){
-		res.sendStatus(500);
+		// console.log(err);
+		return res.sendStatus(500);
 	}
 };
 
