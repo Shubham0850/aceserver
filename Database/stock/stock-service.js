@@ -9,7 +9,7 @@ const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwar
 				await newPack.save();
 			}
 			else{
-				const code = Date.now();
+				const code = Date.now(); // this need to be chnaged
 				const newPack = new StockModel({quantity,productId,branch,godown,inwardFrom,code});
 				await newPack.save();
 			}
@@ -20,6 +20,16 @@ const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwar
 	}
 };
 
+const deleteWithCode = async ({code})=>{
+	try{
+		await StockModel.deleteOne({code});
+
+	}catch(err){
+		//handle err
+	}
+};
+
 module.exports = {
-	createPacks
+	createPacks,
+	deleteWithCode
 };

@@ -6,6 +6,7 @@ const createBarcode = async (req,res)=>{
 	try{
 		const inwardId = req.params.id;
 		const inward = await InwardModel.findById({_id:inwardId});
+		if(inward===null) return res.json({message:'failed'});
 		if(inward.status!=='pendingBarcode'){
 			return res.json({message:'failed'});
 		}
@@ -42,7 +43,7 @@ const createBarcode = async (req,res)=>{
 		await InwardService.chngStatus({_id:inwardId,status:'barcodeGenerated'});
 		return res.json({message:'success'});
 	}catch(err){
-		// console.log(err);
+		console.log(err);
 		return res.sendStatus(500);
 	}
 };

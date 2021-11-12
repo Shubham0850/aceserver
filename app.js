@@ -11,6 +11,7 @@ const admin = require('./routeFunctions/Admin');
 const salesMan = require('./routeFunctions/salesman');
 const salesorder = require('./routeFunctions/salesorder/salesorder');
 const supplier = require('./routeFunctions/supplier/supplier');
+const packandUnpack = require('./routeFunctions/packing-unpacking');
 
 /////////////////////Routes///////////////////////////////////
 app.get('/',(req,res)=>{
@@ -40,6 +41,7 @@ app.post('/createsupplier',authenticateAdminToken,supplier.createSupplier);
 app.post('/updatesupplier/:id',authenticateAdminToken,supplier.updateSupplier);
 app.post('/deletesupplier/:id',authenticateAdminToken,supplier.deleteSupplier);
 app.post('/confirmsalesorder/:id',authenticateAdminToken,salesorder.confirmSalesOrder);
+app.post('/packunpack',authenticateToken,packandUnpack);
 
 app.get('/getsupplier',authenticateToken,supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);
