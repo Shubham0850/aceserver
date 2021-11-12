@@ -29,9 +29,9 @@ const salesOrderSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	transporterName:{
-		type:String,
-		trim:true
+	transporter:{
+		type:mongoose.Schema.Types.ObjectId,
+		ref:'transporters'
 	},
 	marka:{
 		type:String,
@@ -94,7 +94,8 @@ const salesOrderSchema = new mongoose.Schema({
 		hsnCode:{
 			type:String,
 			trim:true
-		}   
+		},
+		dispatchedBatches: [{type:String}]
 	}],
 	remarks:{
 		type:String,
