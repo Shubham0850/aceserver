@@ -70,9 +70,21 @@ const getQuantity = async ({code})=>{
 		//handle err
 	}
 };
+
+const getBy = async(query) => {
+	try{
+		const stock = await StockModel.find(query);
+		return stock;
+
+	}catch(err){
+		//handle err
+	}
+
+};
 module.exports = {
 	createPacks,
 	deleteWithCode,
 	decrementStock,
-	getQuantity
+	getQuantity,
+	getBy
 };

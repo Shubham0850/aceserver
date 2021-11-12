@@ -13,7 +13,7 @@ const salesorder = require('./routeFunctions/salesorder/salesorder');
 const supplier = require('./routeFunctions/supplier/supplier');
 const Transporter = require('./routeFunctions/transporter');
 const packandUnpack = require('./routeFunctions/packing-unpacking');
-
+const StockFunctions  = require('./routeFunctions/stock');
 /////////////////////Routes///////////////////////////////////
 app.get('/',(req,res)=>{
 	res.json({message:'hello'});
@@ -37,7 +37,7 @@ app.post('/deletesalesorder/:id',authenticateAdminToken, salesorder.deleteSalesO
 app.post('/createinward',authenticateToken,inward.createInward);
 app.post('/updateinward/:id',authenticateAdminToken,inward.updateinward);
 app.post('/deleteinward/:id',authenticateAdminToken,inward.deleteinward);
-app.post('/createbarcode/:id',authenticateToken,salesMan.createBarcode);
+app.post('/createbarcode/:id',authenticateToken,StockFunctions.createBarcode);
 app.post('/createsupplier',authenticateAdminToken,supplier.createSupplier);
 app.post('/updatesupplier/:id',authenticateAdminToken,supplier.updateSupplier);
 app.post('/deletesupplier/:id',authenticateAdminToken,supplier.deleteSupplier);
@@ -60,6 +60,7 @@ app.get('/getstockcatagorys',authenticateToken,salesMan.getStockCatagorys);
 app.get('/getstockgroups',authenticateToken,salesMan.getStockGroups);
 app.get('/getsalesorders',authenticateToken,salesorder.getSalesorder);
 app.get('/gettransporter',authenticateToken,Transporter.get);
+app.get('/getstocks',authenticateToken,StockFunctions.getStock);
 
 app.all('*', (req, res) => {
 	res.sendStatus(404);
