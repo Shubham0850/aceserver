@@ -11,7 +11,7 @@ async function get(){
 }
 
 async function create({
-	name  ='',
+	name ='',
 	description='',
 	modelNo='',
 	price =0,
@@ -53,7 +53,58 @@ async function create({
 	}
 }
 
+async function incrimentInward({_id,count=0}){
+	try{
+		await products.findByIdAndUpdate({_id},{
+			$inc:{
+				inwardQuantity: count
+			}
+		});
+		return true;
+
+	}catch(err){
+		//handle err
+		console.log(err);
+		return false;
+	}
+}
+
+async function incrimentSell({_id,count=0}){
+	try{
+		await products.findByIdAndUpdate({_id},{
+			$inc:{
+				sellQuantity: count
+			}
+		});
+		return true;
+
+	}catch(err){
+		//handle err
+		console.log(err);
+		return false;
+	}
+}
+async function incrimentTransfer({_id,count=0}){
+	try{
+		await products.findByIdAndUpdate({_id},{
+			$inc:{
+				transferQuantity: count
+			}
+		});
+		return true;
+
+	}catch(err){
+		//handle err
+		console.log(err);
+		return false;
+	}
+}
+
 //exporting both of the function to use in the server 
 module.exports = {
-	create,get
+	create,
+	get,
+	incrimentInward,
+	incrimentSell,
+	incrimentTransfer,
 };
