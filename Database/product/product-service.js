@@ -1,9 +1,9 @@
 const products = require('./product-model');
 require('../mongo').connect();
 
-async function get(){
+async function get(query){
 	try{
-		const Products = await products.find({});
+		const Products = await products.find(query);
 		return Products;
 	}catch(err){
 		//handle err
