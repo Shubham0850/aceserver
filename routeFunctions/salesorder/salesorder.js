@@ -13,10 +13,18 @@ async function getSalesorder(req,res){
 		match.status=req.query.status;
 	}
 	try{
-		const orders=await SalesorderModel.find(match)
-			.populate('party','name')
-			.populate('salesman','name email');
-		res.send(orders);
+		if(req.body._id){
+			const orders=await SalesorderModel.findById({_id:req.body._id})
+				.populate('party','name')
+				.populate('salesman','name email');
+			return res.send(orders);
+		}
+		else{
+			const orders=await SalesorderModel.find(match)
+				.populate('party','name')
+				.populate('salesman','name email');
+			return res.send(orders);
+		}
 	}catch(e){
 		res.status(500).send(e);
 	}

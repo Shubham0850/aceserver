@@ -1,9 +1,21 @@
 const Customers  =  require('../../Database/customer/customer-service');
 
 const getCustomers = async (req,res)=> {
-	const customers = await Customers.get();
-	if(customers) return res.json(customers);
-	return res.sendStatus(404);
+	try{
+		if(req.body._id){
+			const customers = await Customers.get({_id:req.body._id});
+			if(customers) return res.json(customers);
+			return res.sendStatus(404);
+		}
+		else{
+			const customers = await Customers.get({});
+			if(customers) return res.json(customers);
+			return res.sendStatus(404);
+		}
+	}catch(err){
+	//handle err
+		return res.sendStatus(505);
+	}
 };
 
 module.exports = getCustomers;

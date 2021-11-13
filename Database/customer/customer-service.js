@@ -1,8 +1,8 @@
 const customers = require('./customer-model');
 require('../mongo').connect();
-async function get(){
+async function get(query){
 	try{
-		const Customers = await customers.find({}).populate('salesPerson','name email');
+		const Customers = await customers.find(query).populate('salesPerson','name email');
 		return Customers;
 	}catch(err){
 		//handle err

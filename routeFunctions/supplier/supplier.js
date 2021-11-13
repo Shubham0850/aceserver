@@ -4,14 +4,14 @@ const Supplier = require('../../Database/supplier/supplier');
 //GET /supplier
 //Get/supplier?sortBy=cretedAt:desc  for recent orders
 async function getSupplier(req,res){
-	const sort={};
-	if(req.query.sortBy){
-		const parts=req.query.sortBy.split(':');
-		sort[parts[0]] = parts[1] === 'desc' ? -1:1;
-	}
 	try{
-		const party=await Supplier.find();
-		res.send(party);
+		if(req.body._id){
+			const party=await Supplier.findById({_id:req.body._id});
+			return res.send(party);
+		}else{
+			const party=await Supplier.find();
+			return res.send(party);
+		}
 	}catch(e){
 		res.status(500).send(e);
 	}
