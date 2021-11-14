@@ -43,16 +43,12 @@ async function  createInward(req,res){
 
 async function updateinward(req,res){
 	try{
-		const updates = Object.keys(req.body);
-		const order = await inward.findOne({ _id:req.params.id });
-		if(!order){
-			return res.status(404).send();
-		}
-		updates.forEach(update=>order[update]=req.body[update]);
-		await order.save();
-		res.send(order);
+		await inward.findOneAndUpdate({ _id:req.params.id },{
+			$set:req.body
+		});
+		return res.json({message:'success'});
 	}catch(e){
-		res.status(400).send(e);
+		return res.status(400).send(e);
 
 	}
 }
