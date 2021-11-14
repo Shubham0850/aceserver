@@ -10,7 +10,7 @@ const get = async (req,res)=>{
 		const transporters = await TransporterModel.find({
 			name: { $regex: (name==undefined)?'':name, $options: '-i'},
 		});
-		return res.json({transporters});
+		return res.json(transporters);
 	}
 	catch(err){
 		//handle err
