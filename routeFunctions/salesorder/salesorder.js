@@ -3,6 +3,7 @@ const calculateGst = require('../../Helpers/calculation/calculateGst.js');
 const StockService = require('../../Database/stock/stock-service');
 const CustomerServices = require('../../Database/customer/customer-service');
 const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED, DISPATCHED } = require('./constants.js');
+const filterUndefinedandEmpty = require('../../Helpers/filter/filterUndefinedandEmpty.js');
 
 //GET /salesorder?status=dispatch
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
@@ -45,16 +46,14 @@ async function  createSalesOrder(req,res){
 
 async function updateSalesOrder(req,res){
 	try{
-		const updates = Object.keys(req.body);
-		const order = await SalesorderModel.findOne({ _id:req.params.id });
-		if(!order){
-			return res.status(404).send();
-		}
-		updates.forEach(update=>order[update]=req.body[update]);
-		await order.save();
-		res.send(order);
+		const updates = filterUndefinedandEmpty(req.body);
+		await SalesorderModel.findOneAndUpdate({ _id:req.params.id },{
+			$set: updates
+		});
+		return res.json({message:'success'});
 	}catch(e){
-		res.status(400).send(e);
+		//handle err
+		return res.status(400).send(e);
 
 	}
 }
