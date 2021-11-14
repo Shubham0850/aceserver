@@ -34,7 +34,6 @@ async function  createSalesOrder(req,res){
 	const order = new SalesorderModel({
 		...req.body,
 		salesman:req.user._id,
-		status:PENDING_CONFIRMATION
 	});
 	try{
 		await order.save();
