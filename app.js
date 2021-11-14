@@ -58,7 +58,6 @@ app.get('/getgsts',authenticateToken,salesMan.getGsts);
 app.get('/getbrands',authenticateToken,salesMan.getBrands);
 app.get('/getstockcatagorys',authenticateToken,salesMan.getStockCatagorys);
 app.get('/getstockgroups',authenticateToken,salesMan.getStockGroups);
-app.get('/getsalesorders',authenticateToken,salesorder.getSalesorder);
 app.get('/gettransporter',authenticateToken,Transporter.get);
 app.get('/getstocks',authenticateToken,StockFunctions.getStock);
 

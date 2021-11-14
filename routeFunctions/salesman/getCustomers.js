@@ -2,8 +2,8 @@ const Customers  =  require('../../Database/customer/customer-service');
 
 const getCustomers = async (req,res)=> {
 	try{
-		if(req.body._id){
-			const customers = await Customers.get({_id:req.body._id});
+		if(req.query.id){
+			const customers = await Customers.get({_id:req.query.id});
 			if(customers) return res.json(customers);
 			return res.sendStatus(404);
 		}

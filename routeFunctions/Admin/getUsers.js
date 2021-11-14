@@ -1,8 +1,8 @@
 const User = require('../../Database/user/user-service');
 const getUser = async (req,res)=>{
-	const {_id,name,email} = req.body;
-	if(_id!==undefined){
-		const user = await User.getById(_id);
+	const {id,name,email} = req.query;
+	if(id!==undefined){
+		const user = await User.getById(id);
 		return res.send(user);
 	}
 	const users = await User.getBy({

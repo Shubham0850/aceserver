@@ -2,8 +2,8 @@ const Products  =  require('../../Database/product/product-service');
 
 const getProducts = async (req,res)=> {
 	try{
-		if(req.body._id){
-			const products = await Products.get({_id:req.body._id});
+		if(req.query.id){
+			const products = await Products.get({_id:req.query.id});
 			if(products) return res.json(products);
 			return res.sendStatus(404);
 		}

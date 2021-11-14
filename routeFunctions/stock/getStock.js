@@ -2,7 +2,7 @@ const StockService = require('../../Database/stock/stock-service');
 const getStock = async (req,res)=>{
 	const {id,code,productId} = req.query;
 	if(id!==undefined){
-		const stock = await StockService.getBy({id});
+		const stock = await StockService.getBy({_id:id});
 		return res.send(stock);
 	}
 	if(productId!==undefined){

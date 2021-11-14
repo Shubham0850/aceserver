@@ -5,11 +5,11 @@ const Supplier = require('../../Database/supplier/supplier');
 //Get/supplier?sortBy=cretedAt:desc  for recent orders
 async function getSupplier(req,res){
 	try{
-		if(req.body._id){
-			const party=await Supplier.findById({_id:req.body._id});
+		if(req.query.id){
+			const party=await Supplier.findById({_id:req.query.id});
 			return res.send(party);
 		}else{
-			const party=await Supplier.find();
+			const party=await Supplier.find({});
 			return res.send(party);
 		}
 	}catch(e){

@@ -10,8 +10,8 @@ async function getInward(req,res){
 		match.status=req.query.status;
 	}
 	try{
-		if(req.body._id){
-			const orders=await inward.findById({_id:req.body._id})
+		if(req.query.id){
+			const orders=await inward.findById({_id:req.query.id})
 				.populate('party','name')
 				.populate('salesman','name email');
 			return res.send(orders);
