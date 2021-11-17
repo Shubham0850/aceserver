@@ -9,7 +9,7 @@ const supplierSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	partyname:{
+	name:{
 		type:String,
 		trim:true
 	},
