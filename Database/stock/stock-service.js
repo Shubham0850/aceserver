@@ -5,7 +5,7 @@ const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwar
 		for(var i = 0;i<numberOfPacks;i++){
 			if(isLoose) 
 			{
-				const looseStock = StockModel.findOne({code:'loose',branch,godown});
+				const looseStock = await StockModel.findOne({code:'loose',branch,godown});
 				if(!looseStock){
 					const newLooseStock = new StockModel({quantity:0,productId,branch,godown,inwardFrom,code:'loose'});
 					await newLooseStock.save();
@@ -81,10 +81,24 @@ const getBy = async(query) => {
 	}
 
 };
+
+const getTodaysStock = async ()=>{
+	try{
+		var start = new Date();
+		start.setHours(0,0,0,0);
+		var end = new Date();
+		end.setHours(23,59,59,999);
+		const stocksOfToday = await getBy({createdAt: {$gte: start, $lt: end}});
+		return stocksOfToday;
+	}catch(err){
+		//handle err
+	}
+};
 module.exports = {
 	createPacks,
 	deleteWithCode,
 	decrementStock,
 	getQuantity,
-	getBy
+	getBy,
+	getTodaysStock
 };
