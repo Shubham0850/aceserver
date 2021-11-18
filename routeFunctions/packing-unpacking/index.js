@@ -1,32 +1,32 @@
 const StockService = require('../../Database/stock/stock-service');
 async function packandUnpack(req,res){
 	try{
-		const tobePacked = req.body.packingBarcodes;
+		const barcodesToBeChanged = req.body.barcodesToBeChanged;
 		const {item,godown,branch} = req.body;
 		await StockService.createPacks({
 			godown:godown,
 			branch: branch,
 			quantity: item.masterPackQuantity,
 			numberOfPacks: item.masterPack,
-			productId: item.itemId,
+			productId: item.productId,
 		});
 		await StockService.createPacks({
 			godown:godown,
 			branch: branch,
 			quantity: item.subMasterPackQuantity,
 			numberOfPacks: item.subMasterPack,
-			productId: item.itemId,
+			productId: item.productId,
 		});
 		StockService.createPacks({
 			godown:godown,
 			branch: branch,
 			quantity: item.loose,
 			numberOfPacks: 1,
-			productId: item.itemId,
+			productId: item.productId,
 			isLoose:true
 		});
-		for(let key in tobePacked){
-			await StockService.deleteWithCode({code:tobePacked[key]});
+		for(let key in barcodesToBeChanged){
+			await StockService.deleteWithCode({code:barcodesToBeChanged[key]});
 		}
 		return res.json({message:'success'});
 

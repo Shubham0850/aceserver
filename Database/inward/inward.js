@@ -57,7 +57,7 @@ const inwardSchema = new mongoose.Schema({
 		trim:true
 	},
 	items:[{
-		itemId:{
+		productId:{
 			type:mongoose.Schema.Types.ObjectId,
 			ref:'products',
 		},
