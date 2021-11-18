@@ -4,6 +4,7 @@ const StockService = require('../../Database/stock/stock-service');
 const CustomerServices = require('../../Database/customer/customer-service');
 const { PENDING_CONFIRMATION, CONFIRMED, SUCCESS, FAILED, DISPATCHED } = require('./constants.js');
 const filterUndefinedandEmpty = require('../../Helpers/filter/filterUndefinedandEmpty.js');
+const SalesOrderService = require('../../Database/salesOrders/salesorder-service');
 
 //GET /salesorder?status=dispatch
 //Get/salesorder?sortBy=cretedAt:desc  for recent orders
@@ -32,9 +33,11 @@ async function getSalesorder(req,res){
 }
 
 async function  createSalesOrder(req,res){
+	const voucherNo = await SalesOrderService.createVoucherNumber();
 	const order = new SalesorderModel({
 		...req.body,
 		salesman:req.user._id,
+		voucherNo
 	});
 	try{
 		await order.save();

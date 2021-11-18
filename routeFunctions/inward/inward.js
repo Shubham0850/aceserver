@@ -1,5 +1,5 @@
 const inward = require('../../Database/inward/inward.js');
-
+const InwardService = require('../../Database/inward/inward-service');
 
 //GET /inward?status=dispatch
 //Get/inward?sortBy=cretedAt:desc  for recent orders
@@ -28,10 +28,12 @@ async function getInward(req,res){
 }
 
 async function  createInward(req,res){
+	const voucherNo = await InwardService.createVoucherNumber();
 	const order = new inward({
 		...req.body,
 		salesman:req.user._id,
-		status:'pendingBarcode'
+		status:'pendingBarcode',
+		voucherNo
 	});
 	try{
 		await order.save();
