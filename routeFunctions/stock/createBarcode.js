@@ -28,15 +28,17 @@ const createBarcode = async (req,res)=>{
 				productId: item.productId,
 				inwardFrom:inwardId
 			});
-			StockService.createPacks({
-				godown:inward.godown,
-				branch: inward.branch,
-				quantity: item.loose,
-				numberOfPacks: 1,
-				productId: item.productId,
-				inwardFrom:inwardId,
-				isLoose:true
-			});
+			if(item.loose>0){
+				await StockService.createPacks({
+					godown:inward.godown,
+					branch: inward.branch,
+					quantity: item.loose,
+					numberOfPacks: 1,
+					productId: item.productId,
+					inwardFrom:inwardId,
+					isLoose:true
+				});
+			}
 			const totalQuantity = item.masterPack*item.masterPackQuantity  + item.subMasterPack*item.subMasterPackQuantity + item.loose;
 			await ProductServices.incrimentInward({_id: item.productId,count:totalQuantity});
 		}

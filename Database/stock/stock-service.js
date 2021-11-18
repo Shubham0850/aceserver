@@ -1,4 +1,22 @@
+const get6digits = require('../../Helpers/get6digits');
 const StockModel = require('./stock-model');
+
+const createCode = async ()=>{
+	var todaysStock = await getTodaysStock();
+	if(!todaysStock) {
+		todaysStock = [];
+	}
+	var todaysStockLength = todaysStock.length;
+	const date = new Date();
+	const ddmmyyyy = date.getDate().toString() + (date.getMonth()+1).toString() + date.getFullYear().toString();
+	var isExists = await StockModel.findOne({code: ddmmyyyy+get6digits(todaysStockLength++)});
+	while(isExists){
+		isExists = await StockModel.findOne({code: ddmmyyyy+get6digits(todaysStockLength)});
+		if(isExists) todaysStockLength++;
+	}
+	return ddmmyyyy+get6digits(todaysStockLength);
+};
+
 const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwardFrom,isLoose=false}) =>
 {
 	try{
@@ -18,7 +36,7 @@ const createPacks = async ({numberOfPacks,quantity,productId,branch,godown,inwar
 
 			}
 			else{
-				const code = Date.now(); // this need to be chnaged
+				const code = await createCode();
 				const newPack = new StockModel({quantity,productId,branch,godown,inwardFrom,code});
 				await newPack.save();
 			}
@@ -88,7 +106,8 @@ const getTodaysStock = async ()=>{
 		start.setHours(0,0,0,0);
 		var end = new Date();
 		end.setHours(23,59,59,999);
-		const stocksOfToday = await getBy({createdAt: {$gte: start, $lt: end}});
+		const stocksOfToday = await StockModel.find({createdAt: {$gte: start, $lt: end}})
+			.populate('productId','name price');
 		return stocksOfToday;
 	}catch(err){
 		//handle err
@@ -100,5 +119,6 @@ module.exports = {
 	decrementStock,
 	getQuantity,
 	getBy,
-	getTodaysStock
+	getTodaysStock,
+	createCode
 };
