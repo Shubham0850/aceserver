@@ -73,7 +73,7 @@ const getQuantity = async ({code})=>{
 
 const getBy = async(query) => {
 	try{
-		const stock = await StockModel.find(query);
+		const stock = await StockModel.find(query).populate('productId','name price');
 		return stock;
 
 	}catch(err){
