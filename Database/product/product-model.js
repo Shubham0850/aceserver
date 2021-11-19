@@ -8,6 +8,7 @@ const productSchema = new Schema({
 	description: {type: String},
 	modelNo : {type : String},
 	partNo : {type: String},
+	location:{type: String},
 	price   : {type: Number},
 	stockGroup   : {type: mongoose.Schema.Types.ObjectId, ref:'stockGroups'},
 	stockCatagory : {type: mongoose.Schema.Types.ObjectId, ref:'stockCatagorys'},
