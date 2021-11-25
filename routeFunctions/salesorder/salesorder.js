@@ -18,13 +18,15 @@ async function getSalesorder(req,res){
 		if(req.query.id){
 			const orders=await SalesorderModel.findById({_id:req.query.id})
 				.populate('party','name')
-				.populate('salesman','name email');
+				.populate('salesman','name email')
+				.populate('items.productId','name');
 			return res.send(orders);
 		}
 		else{
 			const orders=await SalesorderModel.find(match)
 				.populate('party','name')
-				.populate('salesman','name email');
+				.populate('salesman','name email')
+				.populate('items.productId','name');
 			return res.send(orders);
 		}
 	}catch(e){
