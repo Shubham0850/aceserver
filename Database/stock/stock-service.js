@@ -91,7 +91,7 @@ const getQuantity = async ({code})=>{
 
 const getBy = async(query) => {
 	try{
-		const stock = await StockModel.find(query).populate('productId','name price');
+		const stock = await StockModel.find(query).populate('productId');
 		return stock;
 
 	}catch(err){
@@ -107,7 +107,7 @@ const getTodaysStock = async ()=>{
 		var end = new Date();
 		end.setHours(23,59,59,999);
 		const stocksOfToday = await StockModel.find({createdAt: {$gte: start, $lt: end}})
-			.populate('productId','name price');
+			.populate('productId');
 		return stocksOfToday;
 	}catch(err){
 		//handle err
