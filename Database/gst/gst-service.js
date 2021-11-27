@@ -9,7 +9,7 @@ async function get(){
 	}
 }
 
-async function create({name,applicableFrom,description,taxabilty,calcType,revrChrg,iGst,cGst,sGst,cess}){
+async function create({name,applicableFrom,description,taxability,calcType,revrChrg,iGst,cGst,sGst,cess}){
 	try{
 		const gst = new GST({
 			name,
@@ -17,8 +17,7 @@ async function create({name,applicableFrom,description,taxabilty,calcType,revrCh
 			description,
 			calcType,
 			revrChrg,
-			taxabilty,
-
+			taxability,
 			iGst,
 			cGst,
 			sGst,
