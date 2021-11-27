@@ -1,48 +1,17 @@
-const Product = require('../../Database/product/product-service');
+const ProductModel = require('../../Database/product/product-model');
 const { SUCCESS_MSG, FAILED } = require('./constants');
 
 const createProduct = async (req,res)=>{
-	const {
-		name,
-		description,
-		modelNo,
-		price,
-		stockGroup,
-		stockCatagory,
-		hsn,
-		gst,
-		barCodeNo,
-		tallyName,
-		brand,
-		UOM,
-		packSize,
-		weight,
-		CBM,
-		openingQuantity=0,
-		location,
-	} = req.body;
-	const isCreated = await Product.create({
-		name,
-		description,
-		modelNo,
-		price,
-		stockGroup,
-		stockCatagory,
-		hsn,
-		gst,
-		barCodeNo,
-		tallyName,
-		brand,
-		UOM,
-		packSize,
-		weight,
-		CBM,
-		openingQuantity,
-		location
-	});
-	if(isCreated) return res.status(201).json({message:SUCCESS_MSG});
-	else{
-		return res.json({message:FAILED});
+	try{
+		const newProduct = new ProductModel(req.body);
+		const isCreated = await newProduct.save();
+		if(isCreated) return res.status(201).json({message:SUCCESS_MSG});
+		else{
+			return res.json({message:FAILED});
+		}
+	}
+	catch(err){
+		return res.sendStatus(500); 
 	}
 };
 
