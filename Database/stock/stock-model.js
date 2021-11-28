@@ -16,3 +16,4 @@ const stockSchema = new Schema({
 //making a mongoose model and exporting it
 const stock  = mongoose.model('stock',stockSchema);
 module.exports = stock;
+

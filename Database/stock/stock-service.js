@@ -91,7 +91,7 @@ const getQuantity = async ({code})=>{
 
 const getBy = async(query) => {
 	try{
-		const stock = await StockModel.find(query).populate('productId');
+		const stock = await StockModel.find(query).populate('productId').sort({'createdAt': 'desc'});
 		return stock;
 
 	}catch(err){
