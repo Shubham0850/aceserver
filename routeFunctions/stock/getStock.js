@@ -1,6 +1,10 @@
 const StockService = require('../../Database/stock/stock-service');
 const getStock = async (req,res)=>{
-	const {id,code,productId,today} = req.query;
+	const {id,code,productId,today,notPrinted} = req.query;
+	if(notPrinted!==undefined){
+		const stock = await StockService.getBy({$or :[ {isPrinted:undefined},{isPrinted:false}]});
+		return res.send(stock);
+	}
 	if(id!==undefined){
 		const stock = await StockService.getBy({_id:id});
 		return res.send(stock);

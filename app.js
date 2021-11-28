@@ -14,6 +14,8 @@ const supplier = require('./routeFunctions/supplier/supplier');
 const Transporter = require('./routeFunctions/transporter');
 const packandUnpack = require('./routeFunctions/packing-unpacking');
 const StockFunctions  = require('./routeFunctions/stock');
+const printcode = require('./routeFunctions/printcode');
+
 /////////////////////Routes///////////////////////////////////
 app.get('/',(req,res)=>{
 	res.json({message:'hello'});
@@ -47,6 +49,7 @@ app.post('/createtransporter',authenticateAdminToken,Transporter.create);
 app.post('/updatetransporter/:id',authenticateAdminToken,Transporter.updateTransporter);
 app.post('/deletetransporter/:id',authenticateAdminToken,Transporter.deleteTransporter);
 app.post('/dispatch/:id',authenticateToken,salesorder.dispatch);
+app.post('/printcode',authenticateToken,printcode);
 
 app.get('/getsupplier',authenticateToken,supplier.getSupplier);
 app.get('/getinward',authenticateToken,inward.getInward);

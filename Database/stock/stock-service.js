@@ -113,6 +113,22 @@ const getTodaysStock = async ()=>{
 		//handle err
 	}
 };
+
+
+const printCode = async(code) => {
+	try{
+		await StockModel.updateOne({code},{
+			$set:{
+				isPrinted:true
+			}
+		});
+		return true;
+	}catch(err){
+		//handle err
+		return false;
+	}
+};
+
 module.exports = {
 	createPacks,
 	deleteWithCode,
@@ -120,5 +136,6 @@ module.exports = {
 	getQuantity,
 	getBy,
 	getTodaysStock,
-	createCode
+	createCode,
+	printCode
 };

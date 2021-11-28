@@ -10,7 +10,8 @@ const stockSchema = new Schema({
 	branch:{type: String},
 	code: {type:String},
 	quantity: {type:Number},
-	dispatchedIn: {type: mongoose.Schema.ObjectId,ref:'salesorder'}
+	dispatchedIn: {type: mongoose.Schema.ObjectId,ref:'salesorder'},
+	isPrinted: {type: Boolean,default:false}
 },{timestamps:true});
 //making a mongoose model and exporting it
 const stock  = mongoose.model('stock',stockSchema);
