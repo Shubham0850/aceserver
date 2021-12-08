@@ -18,7 +18,7 @@ const printcode = require('./routeFunctions/printcode');
 
 /////////////////////Routes///////////////////////////////////
 app.get('/',(req,res)=>{
-	res.json({message:'hello'});
+	res.json({message:'hello world'});
 });
 app.post('/login',getToken);
 //admin routes (only authenticated admin can fetch this)
