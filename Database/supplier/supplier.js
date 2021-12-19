@@ -9,25 +9,25 @@ const supplierSchema = new mongoose.Schema({
 		type:String,
 		trim:true
 	},
-	name:{
+	name:{// required
 		type:String,
 		trim:true
 	},
 	code:{
 		type:Number
 	},
-	group:{
+	group:{// required
 		type:String,
 		trim:true
 	},
-	contactPerson:{
+	contactPerson:{// required
 		type:String,
 		trim:true
 	},
-	contactMobile:{
+	contactMobile:{// required
 		type:Number
 	},
-	email:{
+	email:{// required
 		type:String,
 		trim:true
 	},
@@ -41,19 +41,19 @@ const supplierSchema = new mongoose.Schema({
 	creditLimit:{
 		type:Number
 	},
-	gstType:{
+	gstType:{// required
 		type:String,
 		trim:true
 	},
-	gstNo:{
+	gstNo:{// required
 		type:String,
 		trim:true
 	},
-	state:{
+	state:{// required
 		type:String,
 		trim:true
 	},
-	address:{
+	address:{// required
 		type:String,
 		trim:true
 	}
