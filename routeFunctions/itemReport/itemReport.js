@@ -45,7 +45,7 @@ async function getItemWiseDiscount(req, res) {
     skip = req.query.page * LIMIT;
   }
   try {
-    const products = await SalesorderModel.aggregate([
+    const report = await SalesorderModel.aggregate([
       {
         $match: {
           status: 'CONFIRMED',
@@ -87,9 +87,7 @@ async function getItemWiseDiscount(req, res) {
           product: { $arrayElemAt: ['$product.productDetails', 0] },
         },
       },
-      {
-        $sort: {},
-      },
+
       {
         $skip: skip,
       },
@@ -100,6 +98,7 @@ async function getItemWiseDiscount(req, res) {
 
     return res.status(200).send(report);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 }
@@ -109,15 +108,21 @@ async function getItemReportByParty(req, res) {
   // 61ba1aac2212082f7f358f6c
   let skip = 0;
   var page = 0;
+  var match = null;
   if (req.query.page) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
+  if (req.body.party) {
+    match = {
+      party: mongoose.Types.ObjectId(req.body.party),
+    };
+  }
   try {
-    const pro = await SalesorderModel.aggregate([
+    const report = await SalesorderModel.aggregate([
       {
         $match: {
-          party: mongoose.Types.ObjectId(req.body.party),
+          match,
         },
       },
       {
@@ -149,9 +154,9 @@ async function getItemReportByParty(req, res) {
           product: '$product',
         },
       },
-      {
-        $sort: {},
-      },
+      // {
+      //   $sort: {},
+      // },
       {
         $skip: skip,
       },
@@ -221,7 +226,6 @@ async function getItemPandL(req, res) {
       {
         $project: {
           _id: '$product._id',
-          items: 1,
           totalSale: 1,
           totalPurchase: 1,
           grossAmount: 1,

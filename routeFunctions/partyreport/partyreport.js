@@ -36,9 +36,15 @@ const {
 async function getPartyReportByItem(req, res) {
   let skip = 0;
   var page = 0;
+  var match = null;
   if (req.query.page) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
+  }
+  if (req.body.productId) {
+    match = {
+      'items.productId': mongoose.Types.ObjectId(req.body.productId),
+    };
   }
   try {
     //const report = await salesorderModel.find({ "item.productId" : req.body.item})
@@ -50,7 +56,7 @@ async function getPartyReportByItem(req, res) {
       },
       {
         $match: {
-          'items.productId': mongoose.Types.ObjectId(req.body.productId),
+          match,
         },
       },
       {
@@ -101,9 +107,9 @@ async function getPartyReportByItem(req, res) {
           totalrate: 1,
         },
       },
-      {
-        $sort: {},
-      },
+      // {
+      //   $sort: {},
+      // },
       {
         $skip: skip,
       },
@@ -140,6 +146,7 @@ async function getPartyStatement(req, res) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
+  console.log(req.body);
   try {
     const report = await SalesorderModel.aggregate([
       {
@@ -192,7 +199,7 @@ async function getPartyStatement(req, res) {
         },
       },
       {
-        $sort: {},
+        $sort: { createdAt: 1 },
       },
       {
         $skip: skip,
@@ -235,7 +242,7 @@ async function getSalePurchaseByParty(req, res) {
       {
         $group: {
           _id: '$party',
-          doc: { $push: '$$ROOT' },
+          // doc: { $push: '$$ROOT' },
           totalSale: {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
@@ -245,9 +252,9 @@ async function getSalePurchaseByParty(req, res) {
           grossAmount: { $sum: '$items.grossAmount' },
         },
       },
-      {
-        $sort: {},
-      },
+      // {
+      //   $sort: {},
+      // },
       {
         $skip: skip,
       },
@@ -306,9 +313,9 @@ async function getSalePurchaseByPartyGroup(req, res) {
           grossAmount: { $sum: '$items.grossAmount' },
         },
       },
-      {
-        $sort: {},
-      },
+      // {
+      //   $sort: {},
+      // },
       {
         $skip: skip,
       },
@@ -331,11 +338,11 @@ async function getPartyPandL(req, res) {
   }
   try {
     const report = await SalesorderModel.aggregate([
-      {
-        $match: {
-          party: mongoose.Types.ObjectId(req.body.party),
-        },
-      },
+      // {
+      //   $match: {
+      //     party: mongoose.Types.ObjectId(req.body.party),
+      //   },
+      // },
       {
         $unwind: {
           path: '$items',
@@ -349,11 +356,21 @@ async function getPartyPandL(req, res) {
           as: 'product',
         },
       },
+      {
+        $lookup: {
+          from: 'customers',
+          localField: 'party',
+          foreignField: '_id',
+          as: 'customer',
+        },
+      },
       { $addFields: { product: { $arrayElemAt: ['$product', 0] } } },
+      { $addFields: { customer: { $arrayElemAt: ['$customer', 0] } } },
+
       {
         $group: {
           _id: '$party',
-          items: { $push: '$$ROOT' },
+          items: { $first: '$$ROOT' },
           totalSale: {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
@@ -365,8 +382,18 @@ async function getPartyPandL(req, res) {
         },
       },
       {
-        $sort: {},
+        $project: {
+          _id: 1,
+          totalSale: 1,
+          totalPurchase: 1,
+          grossAmount: 1,
+          quantity: 1,
+          party: '$items.customer',
+        },
       },
+      // {
+      //   $sort: {},
+      // },
       {
         $skip: skip,
       },
@@ -374,8 +401,10 @@ async function getPartyPandL(req, res) {
         $limit: LIMIT,
       },
     ]);
+    console.log(report);
     return res.status(200).send(report);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 }

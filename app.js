@@ -114,12 +114,12 @@ app.post(
 //Item Report
 
 app.get(
-  '/getitemwisereport',
+  '/getitemwisediscount',
   authenticateToken,
   Itemreport.getItemWiseDiscount,
 );
 app.get('/getallitems', authenticateToken, Itemreport.getAllItems);
-app.get('/getitemprofitandloss ', authenticateToken, Itemreport.getItemPandL);
+app.get('/getitemprofitandloss', authenticateToken, Itemreport.getItemPandL);
 app.get(
   '/getitemreportbyparty',
   authenticateToken,
@@ -132,12 +132,16 @@ app.get('/getstocksummary', authenticateToken, Itemreport.getStockSummary);
 
 app.get('/getallparties', authenticateToken, partyReport.getAllParties);
 app.get('/getpartyprofitandloss', authenticateToken, partyReport.getPartyPandL);
-app.get(
+app.post(
   '/getpartyreportbyitem',
   authenticateToken,
   partyReport.getPartyReportByItem,
 );
-app.get('/getpartystatement', authenticateToken, partyReport.getPartyStatement);
+app.post(
+  '/getpartystatement',
+  authenticateToken,
+  partyReport.getPartyStatement,
+);
 app.get(
   '/getsalepurchasebyparty',
   authenticateToken,

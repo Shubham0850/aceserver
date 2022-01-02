@@ -14,7 +14,7 @@ async function getLowStock({ skip, limit }) {
   try {
     const Products = await products
       .find({
-        packSize: {
+        sellQuantity: {
           $lt: 15,
         },
       })
