@@ -175,13 +175,13 @@ async function getStockSummary(req, res) {
   }
   try {
     const report = await ProductsModel.find({}).skip(skip).limit(LIMIT);
-    return res.send(report);
+    return res.status(200).send(report);
   } catch (e) {
     res.status(500).send(e);
   }
 }
 
-async function getItemPandL() {
+async function getItemPandL(req, res) {
   let skip = 0;
   var page = 0;
   if (req.query.page) {
@@ -254,7 +254,6 @@ async function getItemPandL() {
   }
 }
 
-getItemPandL();
 module.exports = {
   getItemWiseDiscount,
   getStockSummary,

@@ -127,7 +127,7 @@ async function getAllParties(req, res) {
   }
   try {
     const report = await PartyModel.find({}).skip(skip).limit(LIMIT);
-    res.status(200).send(report);
+    return res.status(200).send(report);
   } catch (e) {
     res.status(500).send(e);
   }
@@ -144,7 +144,7 @@ async function getPartyStatement(req, res) {
     const report = await SalesorderModel.aggregate([
       {
         $match: {
-          party: mongoose.Types.ObjectId('61ba1aac2212082f7f358f6c'),
+          party: mongoose.Types.ObjectId(req.body.party),
         },
       },
       {
@@ -202,9 +202,8 @@ async function getPartyStatement(req, res) {
       },
     ]);
 
-    res.status(200).send(report);
+    return res.status(200).send(report);
   } catch (e) {
-    console.log(e);
     res.status(500).send(e);
   }
 }
@@ -256,7 +255,7 @@ async function getSalePurchaseByParty(req, res) {
         $limit: LIMIT,
       },
     ]);
-    res.status(200).send(report);
+    return res.status(200).send(report);
   } catch (e) {
     res.status(500).send(e);
   }
@@ -317,7 +316,7 @@ async function getSalePurchaseByPartyGroup(req, res) {
         $limit: LIMIT,
       },
     ]);
-    res.status(200).send(report);
+    return res.status(200).send(report);
   } catch (e) {
     res.status(500).send(e);
   }
