@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 //loading the env variables
 require('dotenv').config({path:'../config.env'});
+
+console.log(process.env.NODE_ENV)
 //connecting to the data base
 function connect(){
 	const mongoUri = process.env.DB_URI.replace(

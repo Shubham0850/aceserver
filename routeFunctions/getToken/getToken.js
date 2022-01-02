@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const isAuthinticated = require('../../Helpers/authentication/authenticate');
 const getToken = async (req,res)=>{
+	console.log(req.body)
 	const providedEmail = req.body.email;
 	const providedPwd = req.body.password;
 	const user = await isAuthinticated(providedEmail,providedPwd);
