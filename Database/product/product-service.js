@@ -10,21 +10,56 @@ async function get({ skip, limit }) {
   }
 }
 
-async function getLowStock({ skip, limit }) {
+async function getLowStock({ skip = 0, limit = 0 }) {
   try {
-    const Products = await products
-      .find({
-        sellQuantity: {
-          $lt: 15,
+    // const Products = await products
+    //   .find({
+    //     sellQuantity: {
+    //       $lt: 15,
+    //     },
+    //   })
+    //   .skip(skip)
+    //   .limit(limit);
+
+    const items = await products.aggregate([
+      {
+        $project: {
+          name: '$name',
+          openingQuantity: 1,
+          inwardQuantity: 1,
+          sellQuantity: 1,
+          transferQuantity: 1,
+          minimumQuantity: { $ifNull: ['$minimumQuantity', 15] },
+          price: 1,
+
+          temp: {
+            $add: ['$openingQuantity', '$inwardQuantity'],
+          },
+          temp1: {
+            $subtract: ['$sellQuantity', '$transferQuantity'],
+          },
         },
-      })
-      .skip(skip)
-      .limit(limit);
-    return Products;
+      },
+      {
+        $project: {
+          name: 1,
+          minimumQuantity: 1,
+          price: 1,
+
+          stockQuantity: {
+            $subtract: ['$temp', '$temp1'],
+          },
+        },
+      },
+    ]);
+
+    return items;
   } catch (err) {
+    console.log(err);
     //handle err
   }
 }
+getLowStock(0, 0);
 
 async function create({
   name = '',
@@ -42,6 +77,7 @@ async function create({
   packSize = 0,
   weight = 0,
   CBM = 0,
+  minimumQuantity = 15,
 }) {
   try {
     const product = new products({
@@ -60,6 +96,7 @@ async function create({
       packSize,
       weight,
       CBM,
+      minimumQuantity,
     });
     await product.save();
     return true;

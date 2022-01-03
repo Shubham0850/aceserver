@@ -10,7 +10,7 @@ const productSchema = new Schema({
   partNo: { type: String },
   location: { type: String },
   price: { type: Number },
-  salePrice: { type: Number },
+  purchasePrice: { type: Number },
   stockGroup: { type: mongoose.Schema.Types.ObjectId, ref: 'stockGroups' },
   stockCatagory: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,6 +25,8 @@ const productSchema = new Schema({
   packSize: { type: Number },
   weight: { type: Number },
   CBM: { type: Number },
+  minimumQuantity: { type: Number },
+
   openingQuantity: { type: Number },
   inwardQuantity: { type: Number, default: 0 },
   sellQuantity: { type: Number, default: 0 },

@@ -40,6 +40,7 @@ const customerSchema = new Schema({
   billType: { type: String },
   accounts: [accountSchema],
   ledger: [ledgerSchema],
+  partyGoup: { type: mongoose.Schema.Types.ObjectId, ref: 'customerGroup' },
 });
 //making a mongoose model and exporting it
 const customers = mongoose.model('customers', customerSchema);

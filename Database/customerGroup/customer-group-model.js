@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const expanseCategorySchema = new Schema(
+const customerGroup = new Schema(
   {
     name: { type: String, index: { unique: true }, required: true },
   },
@@ -8,8 +8,5 @@ const expanseCategorySchema = new Schema(
     timestamp: true,
   },
 );
-const expanseCategory = mongoose.model(
-  'expanseCategory',
-  expanseCategorySchema,
-);
-module.exports = expanseCategory;
+const customerGroup = mongoose.model('customerGroup', customerGroup);
+module.exports = customerGroup;

@@ -21,6 +21,7 @@ async function createExpanseCategory(req, res) {
 
 async function createExpanse(req, res) {
   try {
+    console.log(1);
     const expanse = await expanseService.create(req.body);
 
     return res.status(200).send(expanse);
@@ -60,7 +61,7 @@ async function getExpanseItem(req, res) {
 
 async function getexpanseCategory(req, res) {
   try {
-    const category = await expanseService.get(req.body);
+    const category = await categoryService.get(req.body);
     res.status(200).send(category);
   } catch (e) {
     res.status(500).send(e);

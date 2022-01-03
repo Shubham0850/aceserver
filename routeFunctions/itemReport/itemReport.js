@@ -46,11 +46,11 @@ async function getItemWiseDiscount(req, res) {
   }
   try {
     const report = await SalesorderModel.aggregate([
-      {
-        $match: {
-          status: 'CONFIRMED',
-        },
-      },
+      // {
+      //   $match: {
+      //     status: 'CONFIRMED',
+      //   },
+      // },
       {
         $unwind: {
           path: '$items',
@@ -64,27 +64,49 @@ async function getItemWiseDiscount(req, res) {
           as: 'productDetails',
         },
       },
+      { $addFields: { product: { $arrayElemAt: ['$product', 0] } } },
+
       {
         $group: {
           _id: '$items.productId',
           items: { $push: '$$ROOT' },
+
+          totalSale: {
+            $sum: { $multiply: ['$items.quantity', '$items.rate'] },
+          },
+          totalPurchase: {
+            $sum: {
+              $multiply: ['$product.purchasePrice', '$items.quantity'],
+            },
+          },
+          totalgrossAmount: { $sum: '$items.grossAmount' },
+          quantity: { $sum: '$items.quantity' },
         },
       },
+
       {
         $addFields: {
-          totalrate: { $sum: '$items.items.rate' },
-          totalGross: { $sum: '$items.items.grossAmount' },
-          totalQuantity: { $sum: '$items.items.quantity' },
           product: { $arrayElemAt: ['$items', 0] },
         },
       },
       {
-        $project: {
-          totalrate: 1,
-          totalGross: 1,
-          totalQuantity: 1,
-          _id: 1,
+        $addFields: {
           product: { $arrayElemAt: ['$product.productDetails', 0] },
+        },
+      },
+      {
+        $project: {
+          totalSale: 1,
+          totalQuantity: 1,
+          totalPurchase: 1,
+          totalgrossAmount: 1,
+          quantity: 1,
+          totalDiscountAmount: {
+            $subtract: ['$totalSate', '$totalgrossAmount'],
+          },
+
+          _id: 1,
+          itemName: '$product.name',
         },
       },
 
@@ -95,6 +117,7 @@ async function getItemWiseDiscount(req, res) {
         $limit: LIMIT,
       },
     ]);
+    console.log(report);
 
     return res.status(200).send(report);
   } catch (e) {
@@ -217,7 +240,7 @@ async function getItemPandL(req, res) {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
           totalPurchase: {
-            $sum: { $multiply: ['$product.price', '$items.quantity'] },
+            $sum: { $multiply: ['$product.purchasePrice', '$items.quantity'] },
           },
           grossAmount: { $sum: '$items.grossAmount' },
           quantity: { $sum: '$items.quantity' },
@@ -231,6 +254,10 @@ async function getItemPandL(req, res) {
           grossAmount: 1,
           quantity: 1,
           product: { $arrayElemAt: ['$items', 0] },
+          taxReceivable: '0',
+          taxPayable: '0',
+          saleReturn: '0',
+          purchaseReturn: '0',
         },
       },
       {
@@ -242,6 +269,10 @@ async function getItemPandL(req, res) {
           grossAmount: 1,
           quantity: 1,
           product: '$product.product',
+          taxReceivable: 1,
+          taxPayable: 1,
+          saleReturn: 1,
+          purchaseReturn: 1,
         },
       },
 

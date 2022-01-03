@@ -9,11 +9,28 @@ async function get({ limit, skip }) {
   } catch (err) {}
 }
 
-async function create({ party, category, paymentType, amount, balanceDue }) {
+async function getReport({ limit, skip }) {
+  try {
+    const expanses = await EXPANSE.find({})
+      .populate('expanseCategory')
+      .skip(skip)
+      .limit(limit);
+
+    return expanses;
+  } catch (err) {}
+}
+
+async function create({
+  party,
+  expanseCategory,
+  paymentType,
+  amount,
+  balanceDue,
+}) {
   try {
     const expanse = new EXPANSE({
       party,
-      category,
+      expanseCategory,
       paymentType,
       amount,
       balanceDue,
@@ -25,6 +42,12 @@ async function create({ party, category, paymentType, amount, balanceDue }) {
     return false;
   }
 }
+
+// create({party,
+//   expanseCategory,
+//   paymentType,
+//   amount,
+//   balanceDue,})
 
 module.exports = {
   create,

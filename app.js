@@ -120,13 +120,13 @@ app.get(
 );
 app.get('/getallitems', authenticateToken, Itemreport.getAllItems);
 app.get('/getitemprofitandloss', authenticateToken, Itemreport.getItemPandL);
-app.get(
+app.post(
   '/getitemreportbyparty',
   authenticateToken,
   Itemreport.getItemReportByParty,
 );
 app.get('/getlowstockreport', authenticateToken, Itemreport.getLowStockReport);
-app.get('/getstocksummary', authenticateToken, Itemreport.getStockSummary);
+// app.get('/getstocksummary', authenticateToken, Itemreport.getStockSummary);
 
 //Party Report
 

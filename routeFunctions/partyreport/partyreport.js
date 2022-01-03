@@ -59,6 +59,7 @@ async function getPartyReportByItem(req, res) {
           match,
         },
       },
+
       {
         $group: {
           _id: '$party',
@@ -81,30 +82,46 @@ async function getPartyReportByItem(req, res) {
         },
       },
       {
-        $group: {
-          _id: '$_id',
-
-          totalquantity: { $sum: '$data.items.quantity' },
-          totalgrossAmount: { $sum: '$data.items.grossAmount' },
-          totalrate: { $sum: '$data.items.rate' },
+        $lookup: {
+          from: 'products',
+          localField: 'data.items.productId',
+          foreignField: '_id',
+          as: 'product',
         },
       },
+      { $addFields: { product: { $arrayElemAt: ['$product', 0] } } },
+
+      {
+        $group: {
+          _id: '$_id',
+          doc: { $first: '$$ROOT' },
+          totalQuantity: { $sum: '$data.items.quantity' },
+          totalGrossAmount: { $sum: '$data.items.grossAmount' },
+          totalSale: {
+            $sum: { $multiply: ['$data.items.quantity', '$data.items.rate'] },
+          },
+        },
+      },
+
       {
         $lookup: {
           from: 'customers',
-          localField: '_id',
+          localField: 'doc.data.party',
           foreignField: '_id',
-          as: 'customers',
+          as: 'customer',
         },
       },
       {
         $project: {
           _id: 1,
-          partyName: { $arrayElemAt: ['$customers.name', 0] },
-          totalquantity: 1,
-          data: 1,
-          totalgrossAmount: 1,
-          totalrate: 1,
+          product: 1,
+          party: { $arrayElemAt: ['$customer', 0] },
+          totalQuantity: 1,
+          totalGrossAmount: 1,
+          totalSale: 1,
+          totalPurchase: {
+            $multiply: ['$totalQuantity', '$doc.product.purchasePrice'],
+          },
         },
       },
       // {
@@ -151,7 +168,7 @@ async function getPartyStatement(req, res) {
     const report = await SalesorderModel.aggregate([
       {
         $match: {
-          party: mongoose.Types.ObjectId(req.body.party),
+          party: mongoose.Types.ObjectId('61ba1a4a2212082f7f358f68'),
         },
       },
       {
@@ -160,28 +177,30 @@ async function getPartyStatement(req, res) {
         },
       },
 
-      // {
-      //   $project: {
-      //     _id: 1,
-      //     status: 1,
-      //     items: 1,
-      //     createdAt: 1,
-      //     updatedAt: 1,
-      //     voucherNo: 1,
-      //     product: { $arrayElemAt: ['$product', 0] },
-      //   },
-      // },
+      {
+        $project: {
+          _id: 1,
+          status: 1,
+          items: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          voucherNo: 1,
+          product: { $arrayElemAt: ['$product', 0] },
+        },
+      },
       {
         $group: {
           _id: '$_id',
           items: { $push: '$$ROOT' },
+          totalrate: {
+            $sum: { $multiply: ['$items.rate', '$items.quantity'] },
+          },
+          totalGross: { $sum: '$items.grossAmount' },
+          totalQuantity: { $sum: '$items.quantity' },
         },
       },
       {
         $addFields: {
-          totalrate: { $sum: '$items.items.rate' },
-          totalGross: { $sum: '$items.items.grossAmount' },
-          totalQuantity: { $sum: '$items.items.quantity' },
           salesDetails: { $arrayElemAt: ['$items', 0] },
           date: '$salesDetails.createdAt',
         },
@@ -193,7 +212,6 @@ async function getPartyStatement(req, res) {
           totalQuantity: 1,
           voucherNo: '$salesDetails.voucherNo',
           status: '$salesDetails.status',
-          items: 1,
           createdAt: '$salesDetails.createdAt',
           updatedAt: '$salesDetails.updatedAt',
         },
@@ -208,9 +226,28 @@ async function getPartyStatement(req, res) {
         $limit: LIMIT,
       },
     ]);
+    let statement = [];
+    let total = 0;
+    report.forEach(data => {
+      let temp = { ...data };
+      temp['total'] = total + data.totalrate;
+      total = total + data.totalrate;
+      temp['receivableBalance'] = 0;
 
-    return res.status(200).send(report);
+      if (data.status == PENDING_CONFIRMATION || data.status == FAILED) {
+        temp['PaidReceived'] = 0;
+      } else {
+        temp['receivableBalance'] = data.totalrate;
+        temp['PaidReceived'] = data.totalrate;
+      }
+      temp['TxnBalance'] = data.totalrate - temp['receivableBalance'];
+
+      statement.push(temp);
+    });
+
+    return res.status(200).send(statement);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 }
@@ -237,19 +274,38 @@ async function getSalePurchaseByParty(req, res) {
           as: 'product',
         },
       },
+      {
+        $lookup: {
+          from: 'customers',
+          localField: 'party',
+          foreignField: '_id',
+          as: 'customer',
+        },
+      },
       { $addFields: { product: { $arrayElemAt: ['$product', 0] } } },
+      { $addFields: { customer: { $arrayElemAt: ['$customer', 0] } } },
 
       {
         $group: {
           _id: '$party',
-          // doc: { $push: '$$ROOT' },
+          doc: { $first: '$$ROOT' },
           totalSale: {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
           totalPurchase: {
-            $sum: { $multiply: ['$product.price', '$items.quantity'] },
+            $sum: { $multiply: ['$product.purchasePrice', '$items.quantity'] },
           },
           grossAmount: { $sum: '$items.grossAmount' },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          party: '$doc.customer.name',
+          totalSale: 1,
+          totalPurchase: 1,
+          grossAmount: 1,
+          netProfitorLoss: { $subtract: ['$totalSale', '$totalPurchase'] },
         },
       },
       // {
@@ -283,7 +339,7 @@ async function getSalePurchaseByPartyGroup(req, res) {
       },
       {
         $lookup: {
-          from: 'partGroup',
+          from: 'customerGroup',
           localField: 'partyGroup',
           foreignField: '_id',
           as: 'partyGroup',
@@ -299,16 +355,24 @@ async function getSalePurchaseByPartyGroup(req, res) {
       },
       { $addFields: { product: { $arrayElemAt: ['$product', 0] } } },
       { $addFields: { partyGroup: { $arrayElemAt: ['$partyGroup', 0] } } },
+      {
+        $match: {
+          partyGroup: {
+            $exists: true,
+            $ne: null,
+          },
+        },
+      },
 
       {
         $group: {
           _id: '$partyGroup',
-          doc: { $push: '$$ROOT' },
+          doc: { $first: '$$ROOT' },
           totalSale: {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
           totalPurchase: {
-            $sum: { $multiply: ['$product.price', '$items.quantity'] },
+            $sum: { $multiply: ['$product.purchasePrice', '$items.quantity'] },
           },
           grossAmount: { $sum: '$items.grossAmount' },
         },
@@ -323,8 +387,10 @@ async function getSalePurchaseByPartyGroup(req, res) {
         $limit: LIMIT,
       },
     ]);
+    console.log(report);
     return res.status(200).send(report);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 }
@@ -375,7 +441,7 @@ async function getPartyPandL(req, res) {
             $sum: { $multiply: ['$items.quantity', '$items.rate'] },
           },
           totalPurchase: {
-            $sum: { $multiply: ['$product.price', '$items.quantity'] },
+            $sum: { $multiply: ['$product.purchasePrice', '$items.quantity'] },
           },
           grossAmount: { $sum: '$items.grossAmount' },
           quantity: { $sum: '$items.quantity' },
@@ -389,6 +455,7 @@ async function getPartyPandL(req, res) {
           grossAmount: 1,
           quantity: 1,
           party: '$items.customer',
+          netProfitorLoss: { $subtract: ['$totalSale', '$totalPurchase'] },
         },
       },
       // {
