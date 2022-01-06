@@ -18,6 +18,7 @@ const printcode = require('./routeFunctions/printcode');
 const expanse = require('./routeFunctions/expanse/expanse');
 const Itemreport = require('./routeFunctions/itemReport/itemReport');
 const partyReport = require('./routeFunctions/partyreport/partyreport');
+const transactionReport = require('./routeFunctions/Transaction/index');
 
 /////////////////////Routes///////////////////////////////////
 app.get('/', (req, res) => {
@@ -110,6 +111,7 @@ app.post(
   authenticateToken,
   expanse.createExpanseCategory,
 );
+app.post('/updateexpanse', authenticateToken, expanse.updateExpanse);
 
 //Item Report
 
@@ -152,6 +154,19 @@ app.get(
   authenticateToken,
   partyReport.getSalePurchaseByPartyGroup,
 );
+
+//Transaction Report
+
+app.get('/getsale', authenticateToken, transactionReport.sale);
+app.get('/getpurchase', authenticateToken, transactionReport.purchase);
+app.get(
+  '/getalltransactions',
+  authenticateToken,
+  transactionReport.AllTransactions,
+);
+app.get('/getdaybook', authenticateToken, transactionReport.DayBook);
+app.get('/getbillwise', authenticateToken, transactionReport.BillWise);
+app.get('/getcashflow', authenticateToken, transactionReport.CashFlow);
 
 app.all('*', (req, res) => {
   res.sendStatus(404);

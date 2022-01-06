@@ -46,11 +46,11 @@ async function getItemWiseDiscount(req, res) {
   }
   try {
     const report = await SalesorderModel.aggregate([
-      // {
-      //   $match: {
-      //     status: 'CONFIRMED',
-      //   },
-      // },
+      {
+        $match: {
+          status: 'CONFIRMED',
+        },
+      },
       {
         $unwind: {
           path: '$items',
@@ -102,7 +102,7 @@ async function getItemWiseDiscount(req, res) {
           totalgrossAmount: 1,
           quantity: 1,
           totalDiscountAmount: {
-            $subtract: ['$totalSate', '$totalgrossAmount'],
+            $subtract: ['$totalSale', '$totalPurchase'],
           },
 
           _id: 1,
@@ -136,6 +136,7 @@ async function getItemReportByParty(req, res) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
+  console.log(req.body);
   if (req.body.party) {
     match = {
       party: mongoose.Types.ObjectId(req.body.party),
@@ -144,9 +145,7 @@ async function getItemReportByParty(req, res) {
   try {
     const report = await SalesorderModel.aggregate([
       {
-        $match: {
-          match,
-        },
+        $match: match,
       },
       {
         $unwind: {

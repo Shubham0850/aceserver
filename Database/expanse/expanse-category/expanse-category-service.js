@@ -37,12 +37,17 @@ async function create({ name }) {
     });
 
     s = await expanse.save();
-    console.log(s);
     return true;
   } catch (err) {
     return false;
   }
 }
+
+// async function c() {
+//   const s = await EXPANSE.find({});
+//   console.log(s);
+// }
+// c();
 
 module.exports = {
   create,

@@ -1,6 +1,6 @@
 const get6digits = require('../../Helpers/get6digits');
 const StockModel = require('./stock-model');
-
+const usermodel = require('../user/user-model');
 const createCode = async () => {
   var todaysStock = await getTodaysStock();
   if (!todaysStock) {
@@ -128,6 +128,24 @@ const getQuantity = async ({ code }) => {
 
 const getBy = async query => {
   try {
+    // const stock = await StockModel.find({})
+    //   .populate('productId')
+    //   .populate('inwardFrom')
+
+    //   .populate({
+    //     path: 'inwardFrom',
+    //     populate: {
+    //       path: 'party',
+    //     },
+    //   })
+    //   .populate({
+    //     path: 'inwardFrom',
+    //     populate: {
+    //       path: 'salesman',
+    //     },
+    //   })
+
+    //   .sort({ createdAt: 'desc' });
     const stock = await StockModel.find(query)
       .populate('productId')
       .populate('inwardFrom')

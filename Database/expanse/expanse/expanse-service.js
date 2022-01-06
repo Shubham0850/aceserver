@@ -9,6 +9,35 @@ async function get({ limit, skip }) {
   } catch (err) {}
 }
 
+async function update({
+  _id,
+  party,
+  expanseCategory,
+  paymentType,
+  amount,
+  balanceDue,
+}) {
+  try {
+    const expanses = await EXPANSE.findOneAndUpdate(
+      { _id: _id },
+      {
+        party,
+        expanseCategory,
+        paymentType,
+        amount,
+        balanceDue,
+      },
+      {
+        new: true,
+      },
+    );
+
+    return expanses;
+  } catch (err) {
+    return err;
+  }
+}
+
 async function getReport({ limit, skip }) {
   try {
     const expanses = await EXPANSE.find({})
@@ -52,4 +81,5 @@ async function create({
 module.exports = {
   create,
   get,
+  update,
 };

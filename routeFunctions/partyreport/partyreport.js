@@ -55,9 +55,7 @@ async function getPartyReportByItem(req, res) {
         },
       },
       {
-        $match: {
-          match,
-        },
+        $match: match,
       },
 
       {
@@ -168,7 +166,7 @@ async function getPartyStatement(req, res) {
     const report = await SalesorderModel.aggregate([
       {
         $match: {
-          party: mongoose.Types.ObjectId('61ba1a4a2212082f7f358f68'),
+          party: mongoose.Types.ObjectId(req.body.party),
         },
       },
       {
