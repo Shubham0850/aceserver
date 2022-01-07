@@ -17,9 +17,12 @@ async function create({ name }) {
     await customer.save();
     return true;
   } catch (err) {
+    console.log(err);
     //handle err
   }
 }
+
+create({ name: 'sample1' });
 
 //exporting both of the function to use in the server
 module.exports = {

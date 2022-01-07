@@ -9,7 +9,8 @@ const createBrand = require('./createBrand');
 const createStockCatagory = require('./createStockCatagory');
 const deleteUser = require('./deleteUser');
 const updateCustomer = require('./updateCustomer');
-const createCustomerGroup = require('./createCustomerGroup');
+const { createCustomerGroup, getCustomerGroup } = require('./CustomerGroup');
+
 module.exports = {
   createUser,
   getUsers,
@@ -23,4 +24,5 @@ module.exports = {
   deleteUser,
   updateCustomer,
   createCustomerGroup,
+  getCustomerGroup,
 };

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const customerGroup = new Schema(
+const customerGroupSchema = new Schema(
   {
     name: { type: String, index: { unique: true }, required: true },
   },
@@ -8,5 +8,5 @@ const customerGroup = new Schema(
     timestamp: true,
   },
 );
-const customerGroup = mongoose.model('customerGroup', customerGroup);
+const customerGroup = mongoose.model('customerGroup', customerGroupSchema);
 module.exports = customerGroup;
