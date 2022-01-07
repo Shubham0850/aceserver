@@ -120,7 +120,11 @@ app.post(
   expanse.createExpanseCategory,
 );
 app.post('/updateexpanse', authenticateToken, expanse.updateExpanse);
-
+app.post(
+  '/updateexpanseCategory',
+  authenticateToken,
+  expanse.updateExpanseCategory,
+);
 //Item Report
 
 app.get(
