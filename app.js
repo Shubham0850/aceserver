@@ -112,7 +112,6 @@ app.get('/getstocks', authenticateToken, StockFunctions.getStock);
 app.get('/getexpanse', authenticateToken, expanse.getExpanse);
 app.get('/getexpansecategory', authenticateToken, expanse.getexpanseCategory);
 app.get('/getexpanseitem', authenticateToken, expanse.getExpanseItem);
-app.post('/createexpanse', authenticateToken, expanse.createExpanse);
 app.post('/createexpanseitem', authenticateToken, expanse.createExpanseItem);
 app.post(
   '/createexpansecategory',
