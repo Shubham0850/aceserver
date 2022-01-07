@@ -41,6 +41,11 @@ app.post('/createbrand', authenticateAdminToken, admin.createBrand);
 app.post('/createsalesorder', authenticateToken, salesorder.createSalesOrder);
 app.post('/deleteuser', authenticateAdminToken, admin.deleteUser);
 app.post('/updatecustomer', authenticateAdminToken, admin.updateCustomer);
+app.post(
+  '/createcustomergroup',
+  authenticateAdminToken,
+  admin.createCustomerGroup,
+);
 app.post('/createsalesorder', authenticateToken, salesorder.createSalesOrder);
 app.post(
   '/updatesalesorder/:id',
