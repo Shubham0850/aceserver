@@ -172,6 +172,12 @@ app.get(
 app.get('/getdaybook', authenticateToken, transactionReport.DayBook);
 app.get('/getbillwise', authenticateToken, transactionReport.BillWise);
 app.get('/getcashflow', authenticateToken, transactionReport.CashFlow);
+app.get('/getbalancesheet', authenticateToken, transactionReport.BalanceSheet);
+app.get(
+  '/getprofitandloss',
+  authenticateToken,
+  transactionReport.ProfitAndLoss,
+);
 
 app.all('*', (req, res) => {
   res.sendStatus(404);

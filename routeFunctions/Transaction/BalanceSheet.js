@@ -18,7 +18,7 @@ const calculateGst = ({
     (amount * cess) / 100
   );
 };
-async function ProfitAndLoss(req, res) {
+async function BalanceSheet(req, res) {
   try {
     const report1 = await SalesModel.aggregate([
       {
@@ -82,7 +82,7 @@ async function ProfitAndLoss(req, res) {
           totalSale: {
             $sum: '$totalSale',
           },
-          grossAmount: {
+          SalegrossAmount: {
             $sum: '$grossAmount',
           },
         },
@@ -92,7 +92,7 @@ async function ProfitAndLoss(req, res) {
           _id: 0,
           totalTaxReceivable: 1,
           totalSale: 1,
-          grossAmount: 1,
+          SalegrossAmount: 1,
         },
       },
     ]);
@@ -157,7 +157,7 @@ async function ProfitAndLoss(req, res) {
           totalPurchase: {
             $sum: '$totalPurchase',
           },
-          grossAmount: {
+          PurchasegrossAmount: {
             $sum: '$grossAmount',
           },
         },
@@ -167,7 +167,7 @@ async function ProfitAndLoss(req, res) {
           _id: 0,
           totalTaxPayable: 1,
           totalPurchase: 1,
-          grossAmount: 1,
+          PurchasegrossAmount: 1,
         },
       },
     ]);
@@ -182,7 +182,7 @@ async function ProfitAndLoss(req, res) {
               { $add: ['$sellQuantity', '$transferQuantity'] },
             ],
           },
-          closingStockValue: {
+          stockValue: {
             $multiply: [
               {
                 $subtract: [
@@ -193,10 +193,6 @@ async function ProfitAndLoss(req, res) {
               '$price',
             ],
           },
-          openingStockValue: {
-            $add: ['$openingQuantity', '$price'],
-          },
-          openingQuantity: 1,
         },
       },
       {
@@ -205,12 +201,8 @@ async function ProfitAndLoss(req, res) {
           totalClosingStock: {
             $sum: '$closingStock',
           },
-          totalOpeningStock: {
-            $sum: '$openingQuantity',
-          },
-          totalOpeningStockValue: { $sum: '$openingStockValue' },
-          totalClosingStockValue: {
-            $sum: '$closingStockValue',
+          totalStockValue: {
+            $sum: '$stockValue',
           },
         },
       },
@@ -218,18 +210,16 @@ async function ProfitAndLoss(req, res) {
         $project: {
           _id: 0,
           totalClosingStock: 1,
-          totalOpeningStock: 1,
-          totalOpeningStockValue: 1,
-          totalClosingStockValue: 1,
+          totalStockValue: 1,
         },
       },
     ]);
-    var report = { ...report1[0], ...report2[0], ...report3[0] };
+    report = { ...report1[0], ...report2[0], ...report3[0] };
     return res.status(200).send(report);
   } catch (e) {
-    //console.log(e);
+    // console.log(e);
     return res.status(400).send(e);
   }
 }
 
-module.exports = ProfitAndLoss;
+module.exports = BalanceSheet;

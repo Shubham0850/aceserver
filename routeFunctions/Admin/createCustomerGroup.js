@@ -17,4 +17,4 @@ const createCustomerGroup = async (req, res) => {
   }
 };
 
-module.exports = createCustomer;
+module.exports = createCustomerGroup;

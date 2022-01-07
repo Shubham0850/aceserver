@@ -5,6 +5,8 @@ const BillWise = require('./BillWise');
 const AllTransactions = require('./AllTransactions');
 const CashFlow = require('./CashFlow');
 const ProfitAndLoss = require('./ProfitAndLoss');
+const BalanceSheet = require('./BalanceSheet');
+
 module.exports = {
   DayBook,
   purchase,
@@ -13,4 +15,5 @@ module.exports = {
   AllTransactions,
   CashFlow,
   ProfitAndLoss,
+  BalanceSheet,
 };
