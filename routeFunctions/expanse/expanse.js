@@ -48,7 +48,7 @@ async function createExpanseItem(req, res) {
 
 async function getExpanse(req, res) {
   try {
-    const expanse = await expanseService.get(req.body);
+    const expanse = await expanseService.getReport(req.body);
 
     return res.status(200).send(expanse);
   } catch (e) {

@@ -39,15 +39,20 @@ async function update({
   }
 }
 
-async function getReport({ limit, skip }) {
+async function getReport({ skip, limit }) {
+  console.log(2);
   try {
     const expanses = await EXPANSE.find({})
       .populate('expanseCategory')
+      .populate('party', 'name')
       .skip(skip)
       .limit(limit);
 
+    console.log(expanses);
     return expanses;
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function create({
@@ -83,4 +88,5 @@ module.exports = {
   create,
   get,
   update,
+  getReport,
 };

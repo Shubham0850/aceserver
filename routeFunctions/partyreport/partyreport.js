@@ -41,9 +41,15 @@ async function getPartyReportByItem(req, res) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
+
   if (req.body.productId) {
     match = {
       'items.productId': mongoose.Types.ObjectId(req.body.productId),
+    };
+  }
+  if (req.query.productId) {
+    match = {
+      'items.productId': mongoose.Types.ObjectId(req.query.productId),
     };
   }
   try {
@@ -157,17 +163,25 @@ async function getAllParties(req, res) {
 async function getPartyStatement(req, res) {
   let skip = 0;
   var page = 0;
+  var match = null;
   if (req.query.page) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
-  console.log(req.body);
+  if (req.body.party) {
+    match = {
+      party: mongoose.Types.ObjectId(req.body.party),
+    };
+  }
+  if (req.query.party) {
+    match = {
+      party: mongoose.Types.ObjectId(req.query.party),
+    };
+  }
   try {
     const report = await SalesorderModel.aggregate([
       {
-        $match: {
-          party: mongoose.Types.ObjectId(req.body.party),
-        },
+        $match: match,
       },
       {
         $unwind: {

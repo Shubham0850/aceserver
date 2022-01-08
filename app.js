@@ -19,6 +19,8 @@ const expanse = require('./routeFunctions/expanse/expanse');
 const Itemreport = require('./routeFunctions/itemReport/itemReport');
 const partyReport = require('./routeFunctions/partyreport/partyreport');
 const transactionReport = require('./routeFunctions/Transaction/index');
+const uploadExcel = require('./routeFunctions/excel/excel');
+const upload = require('./config/multer.config');
 
 /////////////////////Routes///////////////////////////////////
 app.get('/', (req, res) => {
@@ -133,7 +135,7 @@ app.get(
 );
 app.get('/getallitems', authenticateToken, Itemreport.getAllItems);
 app.get('/getitemprofitandloss', authenticateToken, Itemreport.getItemPandL);
-app.post(
+app.get(
   '/getitemreportbyparty',
   authenticateToken,
   Itemreport.getItemReportByParty,
@@ -145,16 +147,12 @@ app.get('/getlowstockreport', authenticateToken, Itemreport.getLowStockReport);
 
 app.get('/getallparties', authenticateToken, partyReport.getAllParties);
 app.get('/getpartyprofitandloss', authenticateToken, partyReport.getPartyPandL);
-app.post(
+app.get(
   '/getpartyreportbyitem',
   authenticateToken,
   partyReport.getPartyReportByItem,
 );
-app.post(
-  '/getpartystatement',
-  authenticateToken,
-  partyReport.getPartyStatement,
-);
+app.get('/getpartystatement', authenticateToken, partyReport.getPartyStatement);
 app.get(
   '/getsalepurchasebyparty',
   authenticateToken,
@@ -175,7 +173,9 @@ app.get(
   authenticateToken,
   transactionReport.AllTransactions,
 );
-app.get('/getdaybook', authenticateToken, transactionReport.DayBook);
+app.post('/createdaybook', authenticateToken, transactionReport.dayBook);
+app.get('/getdaybook', authenticateToken, transactionReport.getDayBook);
+
 app.get('/getbillwise', authenticateToken, transactionReport.BillWise);
 app.get('/getcashflow', authenticateToken, transactionReport.CashFlow);
 app.get('/getbalancesheet', authenticateToken, transactionReport.BalanceSheet);
@@ -184,6 +184,8 @@ app.get(
   authenticateToken,
   transactionReport.ProfitAndLoss,
 );
+
+app.post('/uploadexcel', upload.any(), uploadExcel);
 
 app.all('*', (req, res) => {
   res.sendStatus(404);

@@ -127,21 +127,25 @@ async function getItemWiseDiscount(req, res) {
 }
 
 async function getItemReportByParty(req, res) {
-  //61ba1a4a2212082f7f358f68
-  // 61ba1aac2212082f7f358f6c
   let skip = 0;
   var page = 0;
+
   var match = null;
   if (req.query.page) {
     page = req.query.page;
     skip = req.query.page * LIMIT;
   }
-  console.log(req.body);
   if (req.body.party) {
     match = {
       party: mongoose.Types.ObjectId(req.body.party),
     };
   }
+  if (req.query.party) {
+    match = {
+      party: mongoose.Types.ObjectId(req.query.party),
+    };
+  }
+
   try {
     const report = await SalesorderModel.aggregate([
       {

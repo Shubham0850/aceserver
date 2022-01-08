@@ -1,4 +1,5 @@
 const EXPANSE = require('./expanse-category');
+
 async function get({ skip, limit }) {
   try {
     const expanses = await EXPANSE.find({}).skip(skip).limit(limit);
@@ -11,21 +12,35 @@ async function getReport({ skip, limit }) {
     const report = await EXPANSE.aggregate([
       {
         $lookup: {
-          from: 'expanse',
+          from: 'expanses',
           localField: '_id',
           foreignField: 'expanseCategory',
           as: 'expanse',
         },
       },
       {
+        $unwind: {
+          path: '$expanse',
+        },
+      },
+      {
         $group: {
-          _id: '$expanseCategory',
-          items: { $push: '$$ROOT' },
-          amount: { $sum: '$expanse.amount' },
+          _id: '$_id',
+          item: { $first: '$$ROOT' },
+          totalAmount: {
+            $sum: '$expanse.amount',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: '$item.name',
+          totalAmount: 1,
         },
       },
     ]);
-    return expanses;
+    return report;
   } catch (err) {}
 }
 
