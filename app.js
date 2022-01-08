@@ -123,7 +123,7 @@ app.post('/updateexpanse', authenticateToken, expanse.updateExpanse);
 app.post(
   '/updateexpanseCategory',
   authenticateToken,
-  expanse.updateExpanseCategory,
+  expanse.updateexpanseCategory,
 );
 //Item Report
 

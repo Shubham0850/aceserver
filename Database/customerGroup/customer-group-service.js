@@ -22,8 +22,6 @@ async function create({ name }) {
   }
 }
 
-create({ name: 'sample1' });
-
 //exporting both of the function to use in the server
 module.exports = {
   get,
