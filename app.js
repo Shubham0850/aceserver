@@ -97,7 +97,6 @@ app.get('/getinward', authenticateToken, inward.getInward);
 app.get('/getsalesorder', authenticateToken, salesorder.getSalesorder);
 app.get('/getuser', authenticateAdminToken, admin.getUsers);
 app.get('/getcustomers', authenticateToken, salesMan.getCustomers);
-app.get('/getcustomers', authenticateToken, salesMan.getCustomers);
 app.get('/getcustomergroup', authenticateAdminToken, admin.getCustomerGroup);
 
 app.get('/getproducts', authenticateToken, salesMan.getProducts);

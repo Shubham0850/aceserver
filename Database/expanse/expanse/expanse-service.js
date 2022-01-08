@@ -34,6 +34,7 @@ async function update({
 
     return expanses;
   } catch (err) {
+    console.log(err);
     return err;
   }
 }

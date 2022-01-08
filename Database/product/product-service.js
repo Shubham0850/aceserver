@@ -31,12 +31,35 @@ async function getLowStock({ skip = 0, limit = 0 }) {
           transferQuantity: 1,
           minimumQuantity: { $ifNull: ['$minimumQuantity', 15] },
           price: 1,
-
-          temp: {
-            $add: ['$openingQuantity', '$inwardQuantity'],
+          closingStock: {
+            $subtract: [
+              {
+                $add: ['$openingQuantity', '$inwardQuantity'],
+              },
+              {
+                $add: ['$sellQuantity', '$transferQuantity'],
+              },
+            ],
           },
-          temp1: {
-            $subtract: ['$sellQuantity', '$transferQuantity'],
+        },
+      },
+
+      {
+        $project: {
+          name: 1,
+          minimumQuantity: 1,
+          price: 1,
+          closingStock: 1,
+          stockQuantity: 1,
+          diff: {
+            $subtract: ['$closingStock', '$minimumQuantity'],
+          },
+        },
+      },
+      {
+        $match: {
+          diff: {
+            $lte: 0,
           },
         },
       },
@@ -45,21 +68,19 @@ async function getLowStock({ skip = 0, limit = 0 }) {
           name: 1,
           minimumQuantity: 1,
           price: 1,
-
-          stockQuantity: {
-            $subtract: ['$temp', '$temp1'],
-          },
+          closingStock: 1,
+          stockQuantity: 1,
         },
       },
     ]);
 
+    console.log(1, items);
     return items;
   } catch (err) {
     console.log(err);
     //handle err
   }
 }
-getLowStock(0, 0);
 
 async function create({
   name = '',
