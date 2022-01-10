@@ -40,6 +40,7 @@ async function getReport({ skip, limit }) {
         },
       },
     ]);
+
     return report;
   } catch (err) {}
 }
@@ -67,4 +68,5 @@ async function create({ name }) {
 module.exports = {
   create,
   get,
+  getReport,
 };

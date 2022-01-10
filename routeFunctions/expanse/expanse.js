@@ -68,7 +68,7 @@ async function getExpanseItem(req, res) {
 async function getexpanseCategory(req, res) {
   try {
     console.log(req.body);
-    const category = await categoryService.get(req.body);
+    const category = await categoryService.getReport(req.body);
     res.status(200).send(category);
   } catch (e) {
     res.status(500).send(e);
