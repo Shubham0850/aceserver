@@ -64,5 +64,6 @@ const supplierSchema = new mongoose.Schema(
   },
 );
 
+
 const Supplier = mongoose.model('suppliers', supplierSchema);
 module.exports = Supplier;
