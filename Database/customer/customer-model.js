@@ -4,43 +4,44 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //Designing the schema
 const accountSchema = new Schema({
-	accountName: {type: String},
-	address : {type : String},
-	state: {type: String},
-	pincode : {type: String},
-	gstNumber : {type : String}
+  accountName: { type: String },
+  address: { type: String },
+  state: { type: String },
+  pincode: { type: String },
+  gstNumber: { type: String },
 });
 
-const ledgerSchema = new Schema({
-	type:{type:String},
-	depositType: {type: String,
-		enum: ['Dr','Cr'],
-		required : true},
-	amount: {type:Number,
-		required:true},
-},{
-	timestamps:true
-});
+const ledgerSchema = new Schema(
+  {
+    type: { type: String },
+    depositType: { type: String, enum: ['Dr', 'Cr'], required: true },
+    amount: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  },
+);
 const customerSchema = new Schema({
-	branch: {type: String},
-	ledgerGroup: {type: String},
-	name : {type: String,index: {unique: true},required:true},
-	contactPersonName: {type: String},
-	contactNumber: {type: String},
-	email: {type :String},
-	salesPerson : {type: mongoose.Schema.Types.ObjectId,ref:'users'},
-	creditDays: {type: Number},
-	creditLimit : {type: Number},
-	gstType: {type: String},
-	gstNumber: {type:String},
-	state: {type:String},
-	address : {type: String},
-	pincode :{type: String},
-	blocking: {type: Boolean,default:false},
-	billType: {type: String},
-	accounts: [accountSchema],
-	ledger: [ledgerSchema]
+  branch: { type: String },
+  ledgerGroup: { type: String },
+  name: { type: String, index: { unique: true }, required: true },
+  contactPersonName: { type: String },
+  contactNumber: { type: String },
+  email: { type: String },
+  salesPerson: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+  creditDays: { type: Number },
+  creditLimit: { type: Number },
+  gstType: { type: String },
+  gstNumber: { type: String },
+  state: { type: String },
+  address: { type: String },
+  pincode: { type: String },
+  blocking: { type: Boolean, default: false },
+  billType: { type: String },
+  accounts: [accountSchema],
+  ledger: [ledgerSchema],
+  partyGoup: { type: mongoose.Schema.Types.ObjectId, ref: 'customerGroup' },
 });
 //making a mongoose model and exporting it
-const customers  = mongoose.model('customers',customerSchema);
+const customers = mongoose.model('customers', customerSchema);
 module.exports = customers;
